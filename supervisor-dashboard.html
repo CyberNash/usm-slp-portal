@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Dashboard - USM SLP</title>
+    <script src="js/config.js"></script>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/graduation.png" class="navbar-logo">
+                <span>USM Speech-Language Pathology</span>
+            </a>
+            <nav class="navbar-links">
+                <span id="welcome-message"></span>
+                <button id="logout-btn" class="nav-button">Logout <i class="fas fa-sign-out-alt"></i></button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container-fluid" style="padding-top:30px;">
+        <!-- REVERTED to a two-column layout -->
+        <div class="dashboard-layout">
+            <!-- Main Content Area (Now stacks the three cards) -->
+            <div class="dashboard-main">
+                <!-- Card 1: Pending Absence Requests -->
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-inbox"></i> Pending Absence Requests</div>
+                    <div class="card-content" id="pending-requests-list"></div>
+                </div>
+
+                <!-- Card 2: Announcements -->
+                <div class="card">
+                    <div class="card-header">
+                        <span><i class="fas fa-bullhorn"></i> Announcements</span>
+                        <button class="btn-add-new" id="add-announcement-btn"><i class="fas fa-plus"></i> Add New</button>
+                    </div>
+                    <div class="card-content" id="announcements-list"></div>
+                </div>
+
+                <!-- Card 3: Absence History -->
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-history"></i> Absence Request History</div>
+                    <div class="card-content">
+                        <table class="history-table">
+                            <tr><th>Student</th><th>Date</th><th>Status</th><th>Reason</th><th>My Notes</th></tr>
+                            <tbody id="history-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar (Now holds the single, vertical profile card) -->
+            <aside class="dashboard-sidebar">
+                <div id="supervisor-profile-card" class="card">
+                    <!-- The new vertical profile will be loaded here -->
+                </div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 USM School of Health Sciences. All Rights Reserved.</p>
+            <div class="footer-socials">
+                <a href="https://www.instagram.com/usm.official/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/USMOfficial/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:example@usm.my" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+    <!-- ======================= MODALS (NEW) ======================= -->
+    <div id="modal-backdrop" class="modal-backdrop" style="display: none;">
+        <!-- Add New Announcement Modal -->
+        <div id="add-announcement-modal" class="modal-content" style="display: none;">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-header">New Announcement</h2>
+            <form id="announcement-form">
+                <div class="form-group"><label for="add-ann-title">Title</label><input type="text" id="add-ann-title" required></div>
+                <div class="form-group"><label for="add-ann-category">Category</label><input type="text" id="add-ann-category" placeholder="e.g., Event" required></div>
+                <div class="form-group"><label for="add-ann-content">Content</label><textarea id="add-ann-content" rows="4" required></textarea></div>
+                <button type="submit" class="btn-gold">Post Announcement</button>
+            </form>
+        </div>
+        
+        <!-- Edit Announcement Modal -->
+        <div id="edit-announcement-modal" class="modal-content" style="display: none;">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-header">Edit Announcement</h2>
+            <form id="edit-announcement-form">
+                <input type="hidden" id="edit-ann-id">
+                <div class="form-group"><label for="edit-ann-title">Title</label><input type="text" id="edit-ann-title" required></div>
+                <div class="form-group"><label for="edit-ann-category">Category</label><input type="text" id="edit-ann-category" required></div>
+                <div class="form-group"><label for="edit-ann-content">Content</label><textarea id="edit-ann-content" rows="4" required></textarea></div>
+                <button type="submit" class="btn-gold">Save Changes</button>
+                <button type="button" id="delete-announcement-btn" class="btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </form>
+        </div>
+    </div>
+    <script src="js/supervisor-dashboard.js"></script>
+</body>
+</html>

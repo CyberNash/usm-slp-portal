@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - USM SLP</title>
+    <script src="js/config.js"></script>
+    <link rel="stylesheet" href="css/dashboard.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/graduation.png" class="navbar-logo">
+                <span>USM Speech-Language Pathology</span>
+            </a>
+            <nav class="navbar-links">
+                <span id="welcome-message"></span>
+                <button id="logout-btn" class="nav-button">Logout <i class="fas fa-sign-out-alt"></i></button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container-fluid" style="padding-top:30px;">
+        <!-- NEW: Admin Dashboard Layout -->
+        <div class="admin-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="admin-sidebar">
+                <nav class="admin-nav">
+                    <a href="#resources" class="admin-nav-link active" data-view="resources-view"><i class="fas fa-folder"></i> Resource Management</a>
+                    <a href="#users" class="admin-nav-link" data-view="users-view"><i class="fas fa-users"></i> User Management</a>
+                </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="admin-main">
+                <!-- View 1: Resource Management (Visible by Default) -->
+                <div id="resources-view" class="admin-view">
+                    <h1>Resource Management</h1>
+                    <div class="card">
+						<div class="card-header"><i class="fas fa-folder-plus"></i> Resource Management</div>
+							<div class="card-content">
+								<form id="resource-form">
+									<h4>Add a New Resource</h4>
+									<p>Upload a file here to make it available for download on the website's landing page.</p>
+									
+									<div class="form-group">
+										<label for="res-title">Resource Title</label>
+										<input type="text" id="res-title" class="form-control" required>
+									</div>
+
+									<div class="form-grid">
+										<div class="form-group">
+											<label for="res-category">Category</label>
+											<input type="text" id="res-category" class="form-control" placeholder="e.g., Handbooks, Research" required>
+										</div>
+										<div class="form-group">
+											<label for="res-file">File</label>
+											<input type="file" id="res-file" class="form-control" required>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="res-desc">Description (Optional)</label>
+										<textarea id="res-desc" rows="2" class="form-control"></textarea>
+									</div>
+
+									<div class="form-actions">
+										<button type="submit" class="btn-gold">Upload & Add Resource</button>
+									</div>
+								</form>
+								<hr style="margin: 30px 0;">
+						</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Existing Resources</div>
+                        <div class="card-content" id="existing-resources-list"></div>
+                    </div>
+                </div>
+
+                <!-- View 2: User Management (Hidden by Default) -->
+                <div id="users-view" class="admin-view" style="display: none;">
+                    <h1>User Management</h1>
+                    <!-- Supervisor List -->
+                    <div class="card">
+                        <div class="card-header">Supervisor Accounts</div>
+                        <div class="card-content" id="supervisors-list"></div>
+                    </div>
+                    <!-- Student List -->
+                    <div class="card">
+                        <div class="card-header">Student Accounts</div>
+                        <div class="card-content" id="students-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 USM School of Health Sciences. All Rights Reserved.</p>
+            <div class="footer-socials">
+                <a href="https://www.instagram.com/usm.official/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/USMOfficial/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:example@usm.my" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+       <!-- ======================= MODALS ======================= -->
+    <div id="modal-backdrop" class="modal-backdrop" style="display: none;">
+        <!-- THE FIX: This modal block was missing from your HTML file -->
+        <div id="edit-user-modal" class="modal-content" style="display: none;">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-header">Edit User</h2>
+            <!-- Ensure this form has the correct ID that the JS is looking for -->
+            <form id="edit-user-form">
+                <input type="hidden" id="edit-user-id">
+                <input type="hidden" id="edit-user-role">
+                <div class="form-group">
+                    <label>Name</label>
+                    <p id="edit-user-name" style="font-weight: bold;"></p>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-email">Email Address</label>
+                    <input type="email" id="edit-user-email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-password">New Password</label>
+                    <input type="password" id="edit-user-password" class="form-control" placeholder="Leave blank to keep current password">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-gold">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

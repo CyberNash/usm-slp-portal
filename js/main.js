@@ -1,0 +1,164 @@
+/**
+ * =================================================================================
+ * Main JavaScript for USM SLP Website (Landing Page)
+ * =================================================================================
+ * This script handles fetching and displaying dynamic content on the index.html page.
+ */
+
+// IMPORTANT: Replace this with the actual Web App URL you got from deploying your Google Apps Script.
+let autoplayInterval = null; // A variable to hold our autoplay timer
+const categoryStyles = {
+    'Achievement': { icon: 'fas fa-trophy', color: '#FFC107' }, // Gold
+    'Event':       { icon: 'fas fa-calendar-alt', color: '#00BCD4' }, // Teal
+    'Update':      { icon: 'fas fa-bullhorn', color: '#6A0DAD' }, // Purple
+    'default':     { icon: 'fas fa-info-circle', color: '#6c757d' } // Muted Gray for any other category
+};
+
+
+// --- 2. FUNCTION DEFINITIONS ---
+    async function fetchAnnouncements() {
+        const container = document.getElementById('announcements-container');
+        container.innerHTML = '<p>Loading latest announcements...</p>';
+
+        try {
+            const response = await fetch(`${API_URL}?action=getAnnouncements`);
+            const result = await response.json();
+
+            if (result.status === 'success' && result.data.length > 0) {
+                container.innerHTML = '';
+                result.data.forEach(ann => {
+                    // ... your card creation logic is perfect and does not need to change ...
+                    const card = document.createElement('div');
+                    card.className = 'announcement-card';
+                    const style = categoryStyles[ann.category] || categoryStyles['default'];
+                    const postDate = new Date(ann.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    const shortContent = ann.content.length > 150 ? ann.content.substring(0, 150) + '...' : ann.content;
+                    card.innerHTML = `<div class="image-box" style="background-color: ${style.color};"><i class="${style.icon}"></i><span class="category">${ann.category || 'News'}</span></div><div class="content-box"><h3>${ann.title}</h3><p class="date">${postDate}</p><p>${shortContent}</p><a href="announcement.html?id=${ann.id}" class="btn-teal">Read More</a></div>`;
+                    container.appendChild(card);
+                });
+
+                // THE FIX #1: Defer the initialization to let the browser render first.
+                setTimeout(initializeSlider, 100);
+
+            } else {
+                container.innerHTML = '<p>No recent announcements found.</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching announcements:', error);
+            container.innerHTML = '<p style="color: red;">Could not load announcements at this time.</p>';
+        }
+    }
+
+    function initializeSlider() {
+        const track = document.getElementById('announcements-container');
+        const leftBtn = document.getElementById('slider-btn-left');
+        const rightBtn = document.getElementById('slider-btn-right');
+
+        if (!track || track.children.length === 0 || !leftBtn || !rightBtn) return;
+
+        function updateSlider() {
+            // THE FIX #2: Base scroll distance on the container's width, not a child's.
+            const scrollDistance = track.clientWidth;
+            
+            // Go to the next slide
+            const slideRight = () => {
+                // Check if we are at (or very near) the end
+                if (track.scrollLeft + scrollDistance >= track.scrollWidth - 10) {
+                    track.scrollLeft = 0; // Loop back to the start
+                } else {
+                    track.scrollLeft += scrollDistance;
+                }
+            };
+            
+            // Go to the previous slide
+            const slideLeft = () => {
+                track.scrollLeft -= scrollDistance;
+            };
+
+            // Remove any old listeners to prevent bugs
+            if (autoplayInterval) clearInterval(autoplayInterval);
+            leftBtn.onclick = null;
+            rightBtn.onclick = null;
+            
+            // Add new listeners
+            leftBtn.onclick = () => { clearInterval(autoplayInterval); slideLeft(); };
+            rightBtn.onclick = () => { clearInterval(autoplayInterval); slideRight(); };
+            
+            // Restart autoplay
+            autoplayInterval = setInterval(slideRight, 4000);
+        }
+
+        // Initial setup
+        updateSlider();
+
+        // Optional but highly recommended: Recalculate if the window is resized
+        window.addEventListener('resize', updateSlider);
+    }
+    
+/**
+ * Fetches resources from the backend and builds a clickable accordion.
+ */
+async function fetchResources() {
+    const container = document.getElementById('resources-accordion-container');
+    try {
+        const response = await fetch(`${API_URL}?action=getResources`);
+        const result = await response.json();
+
+        if (result.status === 'success' && result.data.length > 0) {
+            container.innerHTML = '';
+            const categories = {};
+            result.data.forEach(res => {
+                if (!categories[res.category]) categories[res.category] = [];
+                categories[res.category].push(res);
+            });
+
+            for (const category in categories) {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'accordion-item';
+                const header = document.createElement('button');
+                header.className = 'accordion-header';
+                header.innerHTML = `<span><i class="fas fa-folder"></i> ${category}</span>`;
+                const body = document.createElement('div');
+                body.className = 'accordion-body';
+                categories[category].forEach(resource => {
+                    body.innerHTML += `<a href="${resource.fileUrl}" target="_blank" download>${resource.title}</a>`;
+                });
+                itemDiv.appendChild(header);
+                itemDiv.appendChild(body);
+                container.appendChild(itemDiv);
+            }
+            initializeAccordion();
+        } else {
+            container.innerHTML = '<p>No resources available.</p>';
+        }
+    } catch (error) {
+        console.error("Error fetching resources:", error);
+        container.innerHTML = '<p>Failed to load resources.</p>';
+    }
+}
+
+/**
+ * Adds click event listeners to make the resource accordion interactive.
+ */
+function initializeAccordion() {
+    const headers = document.querySelectorAll('.accordion-header');
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            header.classList.toggle('active');
+            const body = header.nextElementSibling;
+            if (body.style.maxHeight) {
+                body.style.maxHeight = null;
+            } else {
+                body.style.maxHeight = body.scrollHeight + "px";
+            }
+        });
+    });
+}
+
+
+// --- 3. MAIN EXECUTION ---
+// This runs after the entire HTML page has been loaded.
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAnnouncements();
+    fetchResources();
+});
