@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - USM SLP</title>
+    <script src="js/config.js"></script>
+    <link rel="stylesheet" href="css/Dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/graduation.png" class="navbar-logo">
+                <span>USM Speech-Language Pathology</span>
+            </a>
+            <nav class="navbar-links">
+                <span id="welcome-message"></span>
+                <button id="logout-btn" class="nav-button">Logout <i class="fas fa-sign-out-alt"></i></button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container-fluid" style="padding-top:30px;">
+        <!-- STUDENT DASHBOARD VIEW -->
+        <div id="student-dashboard">
+            <div class="dashboard-layout">
+                <!-- Main Content Area -->
+                <div class="dashboard-main">
+                    <!-- Absence Form Card -->
+                    <div class="card">
+                        <div class="card-header bg-purple"><i class="fas fa-file-signature"></i> Absence Request</div>
+                        <div class="card-content">
+                            <form id="absence-form">
+                                <p>Fill out the form below to request an absence. Your supervisor will be notified.</p>
+                                <!-- NEW: A two-column grid for the first row -->
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="absence-date">Date of Absence</label>
+                                        <input type="date" id="absence-date" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="supervisor-select">Select Supervisor</label>
+                                        <select id="supervisor-select" class="form-control" required>
+                                            <option value="">Loading...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Reason and File inputs remain in a single column -->
+                                <div class="form-group">
+                                    <label for="absence-reason">Reason for Absence</label>
+                                    <textarea id="absence-reason" rows="4" class="form-control" required></textarea>
+                                </div>
+
+                                <!-- NEW: Redesigned file input area -->
+                                <div class="form-group">
+                                    <label>Attach Supporting Document (Optional)</label>
+                                    <div class="file-input-container">
+                                        <!-- This is the custom-styled button that users see -->
+                                        <label for="absence-file" class="file-input-label">
+                                            <i class="fas fa-upload"></i> Choose File
+                                        </label>
+                                        <!-- The actual file input is hidden but functional -->
+                                        <input type="file" id="absence-file" class="file-input-hidden">
+                                        
+                                        <!-- This area still shows the status and remove button -->
+                                        <div id="file-upload-area" class="file-upload-area">
+                                            <p id="file-upload-status"></p>
+                                            <button type="button" id="remove-file-btn" class="remove-file-btn" style="display: none;">&times;</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- NEW: A wrapper for the submit button to align it to the right -->
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-gold" id="absence-submit-btn">Submit Request</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sidebar -->
+                <aside class="dashboard-sidebar">
+                    <div id="student-profile-card" class="card">
+                        <!-- The student's profile will be dynamically loaded here by JavaScript -->
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 USM School of Health Sciences. All Rights Reserved.</p>
+            <div class="footer-socials">
+                <a href="https://www.instagram.com/usm.official/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/USMOfficial/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:example@usm.my" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+    <script src="js/student-dashboard.js"></script>
+</body>
+</html>

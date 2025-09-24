@@ -1,0 +1,685 @@
+/* ======================= Dashboard Professional Redesign (Final Polish) ======================= */
+
+:root {
+    --purple-main: #6A0DAD;
+    --purple-dark: #4B0082;
+    --gold-accent: #FFC107;
+    --teal-accent: #00BCD4;
+    --gray-light: #F5F5F5;
+    --white: #FFFFFF;
+    --text-dark: #333333;
+    --card-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    --card-border-color: #e9ecef;
+}
+
+#welcome-message {
+    color: var(--white);
+    margin-right: 20px;
+    font-weight: 500;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  background-color: var(--gray-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ======================= Buttons & Footer ======================= */
+.btn-gold {
+  background-color: var(--gold-accent);
+  color: var(--purple-dark);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  text-transform: uppercase;
+  transition: opacity 0.3s ease;
+}
+
+.btn-gold:hover {
+    opacity: 0.9;
+}
+
+.footer {
+    flex-shrink: 0;
+    background-color: var(--purple-dark);
+    color: var(--white);
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 30px;
+}
+.footer-socials a {
+  color: var(--white);
+  font-size: 1.5em;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+.footer-socials a:hover {
+  color: var(--gold-accent);
+}
+
+
+/* ======================= Header & Navigation Bar ======================= */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navbar-brand {
+  display: flex;              /* Make logo + text sit in a row */
+  align-items: center;        /* Align them vertically */
+  gap: 15px;                  /* Space between logo and text */
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.navbar-logo {
+  max-height: 40px;           /* Lock consistent logo size */
+  max-width: 100px;
+  object-fit: contain;
+  display: inline-block;      /* Inline, not block */
+  vertical-align: middle;
+}
+
+.navbar {
+  background-color: var(--purple-dark);
+  color: var(--white);
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-links a {
+  color: var(--white);
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+.navbar-links a:hover,
+.nav-button:hover {
+  background-color: var(--gold-accent);
+  color: var(--purple-dark);
+}
+
+.navbar-links a:hover {
+  background-color: var(--gold-accent);
+  color: var(--purple-dark);
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 5px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+  background-color: var(--gold-accent);
+  color: var(--purple-dark);
+}
+
+.container-fluid {
+    width: 100%;
+    padding: 0 30px; 
+    box-sizing: border-box; }
+
+.dashboard-layout { 
+    display: grid; 
+    grid-template-columns: 1fr 320px; /* Main content | Sidebar */
+    gap: 30px; 
+    align-items: flex-start; 
+}
+.dashboard-main { grid-column: 1 / 2; }
+.dashboard-sidebar { grid-column: 2 / 3; position: static; top: 30px; }
+
+/* --- General Card & Typography --- */
+h1, h2, h3, h4 { color: #212529; }
+.card { background-color: white; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 30px; overflow: hidden; }
+.card-header { font-size: 1.1em; font-weight: 600; padding: 15px 20px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; }
+.card-header span { display: flex; align-items: center; gap: 10px; }
+.card-content { padding: 20px; }
+
+#supervisor-profile-card .profile-card__header {
+    text-align: center;
+    padding: 25px 20px 20px;
+}
+#supervisor-profile-card .profile-card__avatar {
+    width: 80px; height: 80px; border-radius: 50%; background-color: #f1f3f5; color: var(--purple-main);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 2.5em; margin-bottom: 15px;
+}
+#supervisor-profile-card .profile-card__name { margin: 0; font-size: 1.3em; }
+#supervisor-profile-card .profile-card__title {
+    margin: 5px 0 0; color: #6c757d; font-size: 0.9em; background-color: #f1f3f5;
+    padding: 2px 8px; border-radius: 8px; display: inline-block;
+}
+#supervisor-profile-card .profile-card__body { padding: 0 20px 20px; }
+#supervisor-profile-card .profile-card__item {
+    display: flex; align-items: flex-start; gap: 15px;
+    padding: 12px 0; border-top: 1px solid #f1f3f5;
+}
+#supervisor-profile-card .profile-card__icon { color: #868e96; width: 20px; text-align: center; margin-top: 2px; }
+#supervisor-profile-card .profile-card__label { font-size: 0.8em; color: #6c757d; margin-bottom: 3px; }
+#supervisor-profile-card .profile-card__value { font-size: 0.95em; color: #212529; }
+
+
+/* --- Redesigned Pending Request Section --- */
+.request-item {
+    border: 1px solid var(--card-border-color);
+    border-left: 4px solid #fd7e14; /* Orange for Pending */
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.request-item:last-child { margin-bottom: 0; }
+
+.request-item__header, .request-item__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+.request-item__header { font-size: 1.1em; font-weight: bold; color: #343a40; margin-bottom: 5px;}
+.request-item__reason { padding: 10px 0; font-size: 0.95em; }
+.attachment-link a { color: var(--purple-main); text-decoration: none; display: inline-flex; align-items:center; gap: 5px; font-weight: 500;}
+.request-item__actions { text-align: right; margin-top: 10px; }
+
+/* FIX: More professional button styles with icons */
+.btn-approve, .btn-reject { display: inline-flex; align-items:center; gap: 6px; color: white; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; }
+.btn-approve { background-color: #0d6efd; } /* Blue */
+.btn-reject { background-color: #dc3545; }  /* Red */
+
+
+/* --- Fixed Height for Request Containers --- */
+/* THE FIX: Set a minimum and maximum height to prevent layout shifts */
+#pending-requests-list {
+    min-height: 150px; /* Prevents the container from collapsing when empty */
+    max-height: 450px; /* Adds a scrollbar if there are too many requests */
+    overflow-y: auto;  /* Enables the vertical scrollbar only when needed */
+}
+
+/* --- Status Pills (shared by pending and history) --- */
+.status-pill { font-size: 0.75em; font-weight: bold; padding: 3px 10px; border-radius: 12px; }
+.status-pill.pending  { background-color: #fff3cd; color: #664d03; border: 1px solid #ffe69c;}
+.status-pill.rejected { background-color: #f8d7da; color: #842029; }
+.status-pill.approved { background-color: #d1e7dd; color: #0f5132; }
+
+
+/* --- History Table --- */
+.history-table { width: 100%; border-collapse: collapse; }
+.history-table th, .history-table td { padding: 12px; border-bottom: 1px solid var(--card-border-color); text-align: left; }
+.history-table th { font-weight: bold; color: #495057; }
+
+/* ======================= Dashboard Modal Styles ======================= */
+/* ======================= Modal Styles ======================= */
+.modal-backdrop {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-backdrop.active {
+    display: flex; /* Show when active */
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-header { text-align: center; color: var(--purple-main); margin-top: 0; }
+
+.btn-edit {
+    background: none;
+    border: 1px solid #ccc;
+    color: #555;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+.btn-edit:hover {
+    background-color: var(--purple-main);
+    color: white;
+    border-color: var(--purple-main);
+}
+
+.btn-add-new {
+    background-color: #0d6efd; /* Blue */
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    font-size: 0.85em;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+}
+.btn-add-new:hover {
+    background-color: #0b5ed7; /* Darker Blue */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between; /* Pushes buttons to opposite ends */
+    align-items: center;
+    margin-top: 25px; /* Adds space above the buttons */
+}
+
+.btn-delete {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+}
+.btn-delete:hover {
+    background-color: #bb2d3b; /* Darker Red */
+}
+
+.profile-card__header {
+    text-align: center;
+    padding: 25px 20px 20px;
+}
+.profile-card__avatar {
+    width: 80px; height: 80px; border-radius: 50%; background-color: #f1f3f5; color: var(--purple-main);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 2.5em; margin-bottom: 15px;
+}
+.profile-card__name { margin: 0; font-size: 1.3em; }
+.profile-card__title {
+    margin: 5px 0 0; color: #6c757d; font-size: 0.9em; background-color: #f1f3f5;
+    padding: 2px 8px; border-radius: 8px; display: inline-block;
+}
+.profile-card__body { padding: 0 20px 20px; }
+
+.profile-card__header {
+    text-align: center;
+    padding: 30px 25px 25px;
+}
+.profile-card__avatar {
+    width: 90px; height: 90px; border-radius: 50%; background-color: #f1f3f5; color: var(--purple-main);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 2.8em; margin-bottom: 15px;
+}
+.profile-card__name { margin: 0; font-size: 1.4em; }
+.profile-card__title {
+    margin: 5px 0 0; color: #6c757d; font-size: 0.9em; background-color: #f1f3f5;
+    padding: 2px 8px; border-radius: 8px; display: inline-block;
+}
+.profile-card__body { padding: 0 25px 25px; }
+
+
+/* THE FIX: Using CSS Grid for a perfect, robust layout */
+.profile-card__item {
+    display: grid;
+    /* Define a 2-column grid: a narrow one for the icon, the rest for text */
+    grid-template-columns: 20px 1fr; 
+    /* Define two rows: one for the label, one for the value */
+    grid-template-rows: auto auto;
+    /* Define the spacing between grid elements */
+    gap: 0px 15px; /* 0px row gap, 15px column gap */
+
+    padding: 14px 0;
+    border-top: 1px solid #f1f3f5;
+}
+
+.profile-card__icon {
+    /* Place the icon in the first column, spanning both rows */
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    
+    color: #868e96;
+    align-self: center; /* Vertically center the icon within its space */
+}
+
+.profile-card__label {
+    /* Place the label in the second column, first row */
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+
+    margin: 0;
+    font-size: 0.8em;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.profile-card__value {
+    /* Place the value in the second column, second row */
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+
+    margin: 0;
+    font-size: 0.95em;
+    font-weight: 500;
+    color: #212529;
+    
+    /* This allows the long email to wrap safely within its own column */
+    word-wrap: break-word; 
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500; /* Use 500 for a slightly lighter bold */
+    color: #495057;
+}
+
+/* THE KEY to consistency: A single class for all inputs */
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus {
+    border-color: var(--purple-main);
+    box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.15);
+    outline: none;
+}
+/* Ensure the textarea is also styled consistently */
+#absence-reason.form-control {
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+/* --- NEW: Custom File Input Styles --- */
+.file-input-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.file-input-hidden {
+    display: none; /* Hide the ugly default input */
+}
+
+.file-input-label {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+.file-input-label:hover {
+    background-color: #e9ecef;
+}
+
+/* This takes up the remaining space */
+.file-upload-area {
+    flex-grow: 1; 
+}
+
+/* Minor tweak to the existing submit button for consistency */
+#absence-submit-btn.btn-gold {
+    padding: 10px 25px;
+    font-size: 1em;
+}
+
+.admin-layout { display: grid; grid-template-columns: 240px 1fr; gap: 30px; }
+.admin-sidebar { background-color: white; border-right: 1px solid var(--card-border-color); padding: 20px; }
+.admin-nav-link { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 6px; text-decoration: none; color: #495057; font-weight: 500; }
+.admin-nav-link:hover { background-color: #f1f3f5; }
+.admin-nav-link.active { background-color: var(--purple-main); color: white; }
+.resource-list { list-style: none; padding: 0; margin: 0; }
+.resource-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px; /* Reduced padding for a tighter list */
+    border-bottom: 1px solid var(--card-border-color);
+}
+.resource-list li:last-child { border-bottom: none; }
+
+/* --- NEW: User List (replaces the old table styles) --- */
+.user-list__header, .user-list__item {
+    display: grid;
+    /* Create three columns: Name, Email, Action */
+    grid-template-columns: 1.5fr 2fr 1fr;
+    gap: 15px;
+    align-items: center;
+    padding: 12px 10px;
+}
+
+/* User List Grid Layout (no change needed, included for context) */
+.user-list__header, .user-list__item {
+    display: grid;
+    /* THE FIX: Define a four-column grid */
+    grid-template-columns: 1.5fr 2fr 1.5fr 1fr;
+    gap: 20px; /* A little more space */
+    align-items: center;
+    padding: 12px 10px;
+}
+.user-list__header {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--card-border-color);
+}
+.user-list__item {
+    border-bottom: 1px solid var(--card-border-color);
+}
+.user-list__item:last-child {
+    border-bottom: none;
+}
+
+.actios {
+    display: flex;
+    justify-content: flex-end; /* Pushes the button group to the right */
+    gap: 10px;                  /* Creates the space between the buttons */
+}
+
+.actios .btn-admin-edit,
+.actios .btn-admin-delete {
+    width: 75px; 
+    text-align: center; 
+
+    padding: 6px 0;
+    font-size: 0.85em;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-admin-edit {
+    background-color: transparent;
+    border-color: #adb5bd;
+    color: #495057;
+}
+.btn-admin-edit:hover {
+    background-color: #FFC107;
+    color: white;
+    border-color: #FFC107;
+}
+
+.btn-admin-delete {
+    background-color: #e64250; /* Light red background */
+    border-color: #f5c2c7;
+    color: #842029;      /* Dark red text */
+}
+.btn-admin-delete:hover {
+    background-color: #dc3545; /* Solid red on hover */
+    border-color: #dc3545;
+    color: white;
+}
+
+/* Cancel/Secondary Button (Gray) */
+.btn-secondary {
+  background-color: var(--gold-accent);
+  color: var(--purple-dark);
+  border: none;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  text-transform: uppercase;
+  transition: opacity 0.3s ease;
+}
+.btn-secondary:hover {
+    background-color: #5a6268; /* A slightly darker gray on hover */
+}
+
+@media (max-width: 992px) { /* Tablet and smaller */
+
+    .main-container {
+        flex-direction: column;
+    }
+    .dashboard-main {
+        order: 2; /* main content second */
+        grid-row: auto;
+        width: 100%;                 /* take full width */
+    }
+    .content-area, .sidebar {
+        flex: 1 0 100%;
+    }
+    /* Navbar adjustments */
+    .navbar .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .navbar-logo {
+        max-width: 80px; /* keeps aspect ratio safe */
+        height: auto;
+    }
+    .navbar-links {
+        flex-direction: column;   /* stack vertically */
+        justify-content: center;  /* center items */
+        align-items: center;      /* align center horizontally */
+        gap: 10px;                /* space between links */
+    }
+    /* Footer adjustments */
+    .footer .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-socials {
+        margin-top: 10px;
+    }
+    
+    /* --- Universal Dashboard Layouts --- */
+    .admin-layout {
+        grid-template-columns: 1fr; /* Stack main content and sidebar */
+    }
+    .admin-sidebar {
+        position: static; /* Un-stick the sidebar */
+        grid-row: 1;      /* Move sidebar/nav to the top on mobile */
+    }
+    .dashboard-layout {
+        display: flex;              /* use flex instead of block */
+        flex-direction: column;     /* stack in a column */
+    }
+    .dashboard-sidebar {
+        order: 1;
+        width: 100%;                 /* take full width */
+        margin: 0 0 20px 0;          /* only bottom spacing */
+    }
+
+    /* --- Student Absence Form Grid --- */
+    .form-grid {
+        grid-template-columns: 1fr; /* Stack date/supervisor fields */
+    }
+
+    /* --- Admin User Management List --- */
+    .user-list__header {
+        display: none; /* Hide the table-like header on mobile */
+    }
+    .user-list__item {
+        grid-template-columns: 1fr; /* Stack user info into a single column */
+        gap: 10px;
+        padding: 20px 15px; /* More vertical padding for readability */
+    }
+    .user-list__item > div:last-child {
+        justify-content: center; /* Center the action buttons */
+    }
+    /* Add descriptive labels before each piece of data */
+    .user-list__item div:nth-child(1)::before { content: 'Name: '; font-weight: bold; }
+    .user-list__item div:nth-child(2)::before { content: 'Email: '; font-weight: bold; }
+    .user-list__item div:nth-child(3)::before { content: 'ID: '; font-weight: bold; }
+}

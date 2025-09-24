@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USM School of Health Sciences - Speech-Language Pathology</title>
+    <script src="js/config.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/landing.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- This Header is from our previous step, it's already updated -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/graduation.png" class="navbar-logo">
+                <span>USM Speech-Language Pathology</span>
+            </a>
+            <nav class="navbar-links">
+                <button id="login-nav-btn" class="nav-button">Login</button>
+                <button id="signup-nav-btn" class="nav-button">Sign-Up</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-container">
+        <div class="modern-layout">
+            <!-- ===== Main Content Area ===== -->
+            <div class="main-content">
+                <!-- Latest Announcements Section -->
+                <section id="announcements">
+                    <div class="section-header">
+                        <h2>Latest Announcements</h2>
+                        <p>Stay updated with the latest news, events, and opportunities in our program</p>
+                    </div>
+
+                    <!-- NEW: Slider Wrapper for positioning the buttons -->
+                    <div class="slider-wrapper">
+                        
+                        <!-- This is the scrolling track -->
+                        <div id="announcements-container" class="slider-track">
+                            <!-- The dynamic announcement cards will be injected here by JavaScript -->
+                        </div>
+
+                        <!-- NEW: Navigation Buttons -->
+                        <button id="slider-btn-left" class="slider-btn" aria-label="Previous Announcement">&lt;</button>
+                        <button id="slider-btn-right" class="slider-btn" aria-label="Next Announcement">&gt;</button>
+                        
+                    </div>
+                </section>
+
+                <!-- Why Choose Section -->
+                <section id="why-choose">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2>Why Choose Speech-Language Pathology?</h2>
+                            <p>Discover the impact and opportunities in this rewarding healthcare profession</p>
+                        </div>
+                        <div class="why-choose-grid">
+                            <div class="illustration">
+                                <!-- Placeholder Image -->
+                                <img src="assets/SpeechTherapist.png" alt="Illustration of a speech pathology session">
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-card"><div class="icon"><i class="fas fa-brain"></i></div><div class="stat-number">36M</div><h4>Americans have communication disorders</h4><p>SLPs help transform lives every day</p></div>
+                                <div class="stat-card"><div class="icon"><i class="fas fa-heart"></i></div><div class="stat-number">95%</div><h4>Job satisfaction rate</h4><p>Among Speech-Language professionals</p></div>
+                                <div class="stat-card"><div class="icon"><i class="fas fa-chart-line"></i></div><div class="stat-number">13%</div><h4>Expected job growth</h4><p>Much faster than average through 2032</p></div>
+                                <div class="stat-card"><div class="icon"><i class="fas fa-dollar-sign"></i></div><div class="stat-number">$80K+</div><h4>Average starting salary</h4><p>For new graduates</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== Sidebar Area ===== -->
+            <aside class="modern-sidebar">
+                <!-- Resources & Downloads -->
+                <div class="sidebar-card">
+                    <h3 class="card-title"><i class="fas fa-download"></i> Resources & Downloads</h3>
+                    <div id="resources-accordion-container">
+                        <!-- Accordion will be built by JavaScript here -->
+                        <p>Loading...</p>
+                    </div>
+                </div>
+                <!-- Quick Links -->
+                <div class="sidebar-card">
+                    <h3 class="card-title"><i class="fas fa-link"></i> Quick Links</h3>
+                    <ul class="quick-links-list">
+                        <li><a href="#" target="_blank">Student Portal <i class="fas fa-external-link-alt"></i></a></li>
+                        <li><a href="#" target="_blank">Library Resources <i class="fas fa-external-link-alt"></i></a></li>
+                        <li><a href="#" target="_blank">Clinical Guidelines <i class="fas fa-external-link-alt"></i></a></li>
+                        <li><a href="#" target="_blank">Professional Organizations <i class="fas fa-external-link-alt"></i></a></li>
+                    </ul>
+                </div>
+                <!-- Need Help? -->
+                <div class="sidebar-card contact-support-box">
+                    <h3 class="card-title"><i class="fas fa-question-circle"></i> Need Help?</h3>
+                    <p>Contact our support team for assistance with resources or technical issues.</p>
+                    <a href="mailto:developerbotautomate@gmail.com" class="btn-teal">Contact Support</a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+	<footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 USM School of Health Sciences. All Rights Reserved.</p>
+            <div class="footer-socials">
+                <a href="#" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:developerbotautomate@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Link to our future JavaScript files -->
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- ======================= Login & Sign-Up Modals ======================= -->
+
+<!-- The Modal Backdrop (dims the background) -->
+    <div id="auth-modal-backdrop" class="modal-backdrop">
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-header">Portal Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email or ID</label>
+                    <input type="text" id="login-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit" class="btn-gold form-submit-btn">Login</button>
+            </form>
+        </div>
+
+        <!-- Sign-Up Modal -->
+        <div id="signup-modal" class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-header">Create an Account</h2>
+            
+            <!-- Tab buttons to switch between Student and Supervisor forms -->
+            <div class="tab-links">
+                <button class="tab-link active" data-form="student-signup-form">Student</button>
+                <button class="tab-link" data-form="supervisor-signup-form">Supervisor</button>
+            </div>
+
+            <!-- Student Sign-up Form -->
+            <form id="student-signup-form" class="signup-form">
+                <div class="form-group"><label for="student-name">Full Name</label><input type="text" id="student-name" required></div>
+                <div class="form-group"><label for="student-id">Student ID (Matric No.)</label><input type="text" id="student-id" required></div>
+                <div class="form-group"><label for="student-year">Year</label><input type="text" id="student-year" required></div>
+                <div class="form-group"><label for="student-course">Course</label><input type="text" id="student-course" required></div>
+                <div class="form-group"><label for="student-email">Email Address</label><input type="email" id="student-email" required></div>
+                <div class="form-group"><label for="student-phone">Phone Number</label><input type="tel" id="student-phone" required></div>
+                <div class="form-group"><label for="student-password">Create Password</label><input type="password" id="student-password" required></div>
+                <button type="submit" class="btn-gold form-submit-btn">Sign Up as Student</button>
+            </form>
+
+            <!-- Supervisor Sign-up Form (initially hidden) -->
+            <form id="supervisor-signup-form" class="signup-form" style="display:none;">
+                <div class="form-group"><label for="supervisor-name">Full Name</label><input type="text" id="supervisor-name" required></div>
+                <div class="form-group"><label for="supervisor-id">Employee ID / Staff No.</label><input type="text" id="supervisor-id" required></div>
+                <div class="form-group"><label for="supervisor-email">Email Address</label><input type="email" id="supervisor-email" required></div>
+                <div class="form-group"><label for="supervisor-phone">Phone Number</label><input type="tel" id="supervisor-phone" required></div>
+                <div class="form-group"><label for="supervisor-password">Create Password</label><input type="password" id="supervisor-password" required></div>
+                <button type="submit" class="btn-gold form-submit-btn">Sign Up as Supervisor</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

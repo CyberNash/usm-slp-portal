@@ -1,0 +1,376 @@
+/* ======================= Global Styles & Color Variables ======================= */
+
+
+:root {
+  --purple-main: #6A0DAD;
+  --purple-dark: #4B0082;
+  --gold-accent: #FFC107;
+  --teal-accent: #00BCD4;
+  --gray-light: #F5F5F5;
+  --white: #FFFFFF;
+  --text-dark: #333333;
+}
+
+
+html {
+    height: 100%;
+}
+
+main {
+  flex: 1 0 auto;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  background-color: var(--gray-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ======================= Header & Navigation Bar ======================= */
+.navbar {
+  background-color: var(--purple-dark);
+  color: var(--white);
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.navbar-links a {
+  color: var(--white);
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  background-color: var(--gold-accent);
+  color: var(--purple-dark);
+}
+
+/* ======================= Main Page Content ======================= */
+.main-container {
+  flex: 1 0 auto;
+  display: flex;
+  gap: 30px; /* Space between content and sidebar */
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.content-area {
+  flex: 3; /* Takes up 3/4 of the space */
+}
+
+.sidebar {
+  flex: 1; /* Takes up 1/4 of the space */
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Sections */
+section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: var(--purple-main);
+    border-bottom: 2px solid var(--gray-light);
+    padding-bottom: 10px;
+}
+
+/* Cards for Announcements and Facts */
+.card {
+  background-color: var(--white);
+  border: 1px solid #e0e0e0;
+  border-left: 5px solid var(--purple-main);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.announcement-meta {
+    font-size: 0.85em;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+/* ======================= Sidebar ======================= */
+.sidebar-header {
+    background-color: var(--teal-accent);
+    color: var(--white);
+    padding: 15px;
+    margin: -20px -20px 20px -20px;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+}
+
+.resource-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.resource-list li a {
+    text-decoration: none;
+    color: var(--purple-dark);
+    display: block;
+    padding: 10px 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.resource-list li a:hover {
+    background-color: var(--gray-light);
+    color: var(--teal-accent);
+}
+
+.resource-list i {
+    margin-right: 10px;
+    color: var(--teal-accent);
+}
+
+
+/* ======================= Buttons & Footer ======================= */
+.btn-gold {
+  background-color: var(--gold-accent);
+  color: var(--purple-dark);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  text-transform: uppercase;
+  transition: opacity 0.3s ease;
+}
+
+.btn-gold:hover {
+    opacity: 0.9;
+}
+
+.footer {
+    flex-shrink: 0;
+    background-color: var(--purple-dark);
+    color: var(--white);
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 30px;
+}
+
+/* ======================= Modal Styles ======================= */
+.modal-backdrop {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-backdrop.active {
+    display: flex; /* Show when active */
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.modal-header {
+    text-align: center;
+    color: var(--purple-main);
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Important */
+}
+
+.form-submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+/* Tab Styles for Sign-up */
+.tab-links {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+.tab-link {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #888;
+}
+.tab-link.active {
+    color: var(--purple-main);
+    border-bottom: 3px solid var(--purple-main);
+    font-weight: bold;
+}
+
+/* New Nav Button Style */
+.nav-button {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1em;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: var(--gold-accent);
+    color: var(--purple-dark);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between logo and text */
+}
+
+.navbar-logo {
+  max-height: 40px;  /* limit height */
+  max-width: 100px;  /* limit width */
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Footer Social Links */
+.footer-socials {
+    margin-top: 10px;
+}
+
+.footer-socials a {
+    color: var(--white);
+    font-size: 1.5em;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.footer-socials a:hover {
+    color: var(--gold-accent);
+}
+
+@media (max-width: 992px) {
+    .main-container {
+        flex-direction: column;
+    }
+    .content-area, .sidebar {
+        flex: 1 0 100%;
+    }
+  /* Navbar adjustments */
+  .navbar .container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .navbar-logo {
+    max-width: 80px; /* keeps aspect ratio safe */
+    height: auto;
+  }
+  .navbar-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  /* Footer adjustments */
+  .footer .container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-socials {
+    margin-top: 10px;
+  }
+}
