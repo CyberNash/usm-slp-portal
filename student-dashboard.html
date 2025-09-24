@@ -80,6 +80,28 @@
                             </form>
                         </div>
                     </div>
+                    <div class="card" style="margin-top: 30px;">
+                        <div class="card-header bg-teal"><i class="fas fa-history"></i> Your Absence History</div>
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date of Absence</th>
+                                            <th>Supervisor</th>
+                                            <th>Status</th>
+                                            <th>Reason</th>
+                                            <th>Document</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="absence-history-body">
+                                        <!-- History rows will be loaded here by JavaScript -->
+                                        <tr><td colspan="5">Loading history...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Sidebar -->
                 <aside class="dashboard-sidebar">

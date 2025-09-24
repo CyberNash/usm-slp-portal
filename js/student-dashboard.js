@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Populate header and profile card with the student's specific data
         welcomeMessage.textContent = `Welcome, ${currentUser.fullName}!`;
         populateStudentProfile();
-        
+        loadAbsenceHistory();
         // Prepare the absence form
         populateSupervisorsDropdown();
         document.getElementById('absence-file').addEventListener('change', (e) => {
@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('file-upload-status').textContent = selectedFile ? `Selected: ${selectedFile.name}` : '';
         });
         document.getElementById('absence-form').addEventListener('submit', handleAbsenceSubmit);
-        document.getElementById('absence-form').addEventListener('submit', handleAbsenceSubmit);
         fileInput.addEventListener('change', handleFileSelect);
         removeFileBtn.addEventListener('click', handleRemoveFile);
+        
     }
     
     function handleFileSelect(e) {
@@ -137,6 +137,7 @@ function populateStudentProfile() {
             if(result.status === 'success') {
                 e.target.reset();    // Clears text fields
                 handleRemoveFile();  // Our new function clears the file input and state
+                loadAbsenceHistory(); 
             }
         } catch (error) { 
             alert('A network error occurred.');
@@ -165,6 +166,50 @@ function populateStudentProfile() {
             reader.onerror = error => reject(error);
         });
     }
+
+async function loadAbsenceHistory() {
+    const tbody = document.getElementById('absence-history-body');
+    const studentId = currentUser.userId;
+
+    // Show a loading state
+    tbody.innerHTML = '<tr><td colspan="5">Loading your history...</td></tr>';
+
+    try {
+        // Call our NEW API endpoint
+        const response = await fetch(`${API_URL}?action=getStudentAbsenceHistory&studentId=${studentId}`);
+        const result = await response.json();
+
+        if (result.status === 'success' && result.data.length > 0) {
+            tbody.innerHTML = ''; // Clear the loading message
+            result.data.forEach(item => {
+                // Create a table row for each history item
+                const row = document.createElement('tr');
+                
+                // Use a conditional (ternary) operator for the document link
+                const documentLink = item.fileUrl
+                    ? `<a href="${item.fileUrl}" target="_blank" class="table-icon-link" title="View Document"><i class="fas fa-file-alt"></i></a>`
+                    : 'N/A';
+                
+                // Use the item status to apply a CSS class for styling
+                const statusPill = `<span class="status-pill ${item.status.toLowerCase()}">${item.status}</span>`;
+
+                row.innerHTML = `
+                    <td>${new Date(item.absenceDate).toLocaleDateString()}</td>
+                    <td>${item.supervisorName}</td>
+                    <td>${statusPill}</td>
+                    <td>${item.reason}</td>
+                    <td>${documentLink}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="5">No absence history found.</td></tr>';
+        }
+    } catch (error) {
+        console.error("Failed to load absence history:", error);
+        tbody.innerHTML = '<tr><td colspan="5" style="color: red;">Could not load history. Please try again later.</td></tr>';
+    }
+}
 
     // --- 5. LOGOUT & INITIAL EXECUTION ---
     function handleLogout() {

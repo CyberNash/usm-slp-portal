@@ -232,11 +232,32 @@ h1, h2, h3, h4 { color: #212529; }
 
 
 /* --- History Table --- */
-.history-table { width: 100%; border-collapse: collapse; }
-.history-table th, .history-table td { padding: 12px; border-bottom: 1px solid var(--card-border-color); text-align: left; }
-.history-table th { font-weight: bold; color: #495057; }
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
 
-/* ======================= Dashboard Modal Styles ======================= */
+/* This rule is correct and does not need to change */
+.history-table th, .history-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--card-border-color);
+    text-align: left;
+}
+
+/* This rule is correct and does not need to change */
+.history-table th {
+    font-weight: bold;
+    color: #495057;
+}
+
+/* This rule for the cell itself is also correct */
+.history-table .supervisor-name-cell {
+    max-width: 150px;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /* ======================= Modal Styles ======================= */
 .modal-backdrop {
     display: none; /* Hidden by default */
@@ -599,6 +620,14 @@ h1, h2, h3, h4 { color: #212529; }
     background-color: #5a6268; /* A slightly darker gray on hover */
 }
 
+.table-responsive {
+    min-height: 150px; /* Prevents container collapse */
+    max-height: 450px; /* Adds a scrollbar if content is too long */
+    overflow-y: auto;  /* Enables vertical scrollbar only when needed */
+    border: 1px solid var(--card-border-color); /* Optional: nice visual touch */
+    border-radius: 8px; /* Optional: matches modern card styles */
+}
+
 @media (max-width: 992px) { /* Tablet and smaller */
 
     .main-container {
@@ -683,3 +712,4 @@ h1, h2, h3, h4 { color: #212529; }
     .user-list__item div:nth-child(2)::before { content: 'Email: '; font-weight: bold; }
     .user-list__item div:nth-child(3)::before { content: 'ID: '; font-weight: bold; }
 }
+
