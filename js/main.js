@@ -50,48 +50,74 @@ const categoryStyles = {
     }
 
     function initializeSlider() {
+        console.log("Attempting to initialize slider..."); // For debugging
+
         const track = document.getElementById('announcements-container');
         const leftBtn = document.getElementById('slider-btn-left');
         const rightBtn = document.getElementById('slider-btn-right');
 
-        if (!track || track.children.length === 0 || !leftBtn || !rightBtn) return;
+        // More robust check: Are all the essential parts here?
+        if (!track || !leftBtn || !rightBtn) {
+            console.error("Slider initialization failed: Could not find track or buttons.");
+            return; // Stop if the core HTML is missing
+        }
+
+        // Is there anything to slide?
+        if (track.children.length <= 1) {
+            console.log("Slider not needed: 1 or fewer announcements found.");
+            // Hide the buttons if there's nothing to slide to
+            leftBtn.style.display = 'none';
+            rightBtn.style.display = 'none';
+            return; // Stop if there's no need for a slider
+        }
+        
+        // If we get here, the buttons should be visible
+        leftBtn.style.display = 'block';
+        rightBtn.style.display = 'block';
 
         function updateSlider() {
-            // THE FIX #2: Base scroll distance on the container's width, not a child's.
+            // THIS IS THE CRITICAL CHECK
+            if (track.children.length === 0) {
+                console.error("updateSlider failed: No announcement cards exist in the track.");
+                return;
+            }
+
+            // Now it's safe to measure the first child
             const scrollDistance = track.clientWidth;
+            console.log(`Slider updated. Scroll distance per slide: ${scrollDistance}px`);
             
-            // Go to the next slide
             const slideRight = () => {
-                // Check if we are at (or very near) the end
-                if (track.scrollLeft + scrollDistance >= track.scrollWidth - 10) {
-                    track.scrollLeft = 0; // Loop back to the start
+                // Using a buffer (10px) to handle rounding issues
+                if (track.scrollLeft >= track.scrollWidth - scrollDistance - 10) {
+                    track.scrollLeft = 0; // Loop to start
                 } else {
                     track.scrollLeft += scrollDistance;
                 }
             };
             
-            // Go to the previous slide
             const slideLeft = () => {
-                track.scrollLeft -= scrollDistance;
+                if (track.scrollLeft < scrollDistance) {
+                    track.scrollLeft = track.scrollWidth; // Loop to end
+                } else {
+                    track.scrollLeft -= scrollDistance;
+                }
             };
 
-            // Remove any old listeners to prevent bugs
+            // --- Event Listener Management ---
             if (autoplayInterval) clearInterval(autoplayInterval);
+            
             leftBtn.onclick = null;
             rightBtn.onclick = null;
             
-            // Add new listeners
             leftBtn.onclick = () => { clearInterval(autoplayInterval); slideLeft(); };
             rightBtn.onclick = () => { clearInterval(autoplayInterval); slideRight(); };
             
-            // Restart autoplay
             autoplayInterval = setInterval(slideRight, 4000);
+            console.log("Slider autoplay started.");
         }
 
-        // Initial setup
+        // Run the setup and listen for window resizing
         updateSlider();
-
-        // Optional but highly recommended: Recalculate if the window is resized
         window.addEventListener('resize', updateSlider);
     }
     
