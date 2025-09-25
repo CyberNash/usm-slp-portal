@@ -1,9 +1,6 @@
 // js/student-dashboard.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // CRITICAL: Make sure this is your correct API URL    
-    // --- 1. AUTHENTICATION & DATA RETRIEVAL ---
-    // This is our security guard. It ensures only a logged-in Student can see this page.
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser || currentUser.role !== 'Student') {
         alert('Access Denied. You are not authorized to view this page.');
@@ -20,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('absence-file');
     const fileStatusText = document.getElementById('file-upload-status');
     const removeFileBtn = document.getElementById('remove-file-btn');
+    const submitAttendanceBtn = document.getElementById('submit-attendance-btn');
+    const passcode_input = document.getElementById('passcode-input');
+    const attendanceFeedback = document.getElementById('attendance-feedback');
     
     // --- 3. INITIALIZE THE STUDENT VIEW ---
     function initStudentView() {
@@ -36,9 +36,57 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('absence-form').addEventListener('submit', handleAbsenceSubmit);
         fileInput.addEventListener('change', handleFileSelect);
         removeFileBtn.addEventListener('click', handleRemoveFile);
+        submitAttendanceBtn.addEventListener('click', handleSubmitAttendance);
+
         
     }
     
+    async function handleSubmitAttendance() {
+        const passcode = passcode_input.value.trim();
+
+        // Basic validation
+        if (passcode.length !== 6 || !/^\d+$/.test(passcode)) {
+            attendanceFeedback.textContent = 'Please enter a valid 6-digit numeric passcode.';
+            attendanceFeedback.className = 'feedback-message error';
+            return;
+        }
+
+        // Set loading state
+        submitAttendanceBtn.disabled = true;
+        submitAttendanceBtn.textContent = 'Submitting...';
+        attendanceFeedback.textContent = ''; // Clear previous messages
+
+        const payload = {
+            action: 'submitAttendance',
+            passcode: passcode,
+            studentId: currentUser.userId // The logged-in student's unique ID
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            // Display feedback based on success or error
+            if (result.status === 'success') {
+                attendanceFeedback.textContent = result.message;
+                attendanceFeedback.className = 'feedback-message success';
+                passcode_input.value = ''; // Clear input field on success
+            } else {
+                throw new Error(result.message || 'An unknown error occurred.');
+            }
+        } catch (error) {
+            attendanceFeedback.textContent = error.message;
+            attendanceFeedback.className = 'feedback-message error';
+        } finally {
+            // Re-enable button
+            submitAttendanceBtn.disabled = false;
+            submitAttendanceBtn.textContent = 'Submit Passcode';
+        }
+    }
+
     function handleFileSelect(e) {
         selectedFile = e.target.files[0];
         if (selectedFile) {

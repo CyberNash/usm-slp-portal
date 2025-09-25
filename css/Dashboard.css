@@ -33,13 +33,6 @@ body {
   flex-direction: column;
 }
 
-main.container-fluid {
-    flex-grow: 1; /* This is the magic property that pushes the footer down */
-    width: 100%;
-    max-width: 1140px; /* Optional: Constrain width on large screens */
-    margin: 0 auto; /* Center the main content */
-    padding: 30px 15px; /* Ensure consistent padding */
-}
 
 /* ======================= Buttons & Footer ======================= */
 .btn-gold {
@@ -163,14 +156,15 @@ main.container-fluid {
     gap: 30px; 
     align-items: flex-start; 
 }
-.dashboard-main { grid-column: 1 / 2; }
-.dashboard-sidebar { grid-column: 2 / 3; position: static; top: 30px; }
+.dashboard-main { flex: 1;min-width: 65%; }
+.dashboard-sidebar { width: 100%; max-width: 350px; flex-grow: 1; }
 
 /* --- General Card & Typography --- */
 h1, h2, h3, h4 { color: #212529; }
 .card { background-color: white; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 30px; overflow: hidden; }
 .card-header { font-size: 1.1em; font-weight: 600; padding: 15px 20px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; }
 .card-header span { display: flex; align-items: center; gap: 10px; }
+
 .card-content { padding: 20px; }
 
 #supervisor-profile-card .profile-card__header {
@@ -716,7 +710,9 @@ h1, h2, h3, h4 { color: #212529; }
 .bg-warning { background-color: #ffc107; color: #333 !important; }
 .bg-warning .small-box-footer { color: #333 !important; }
 .bg-info { background-color: #17a2b8; }
-.bg-success { background-color: #28a745; }
+.bg-purple{background-color: #8d6eea;}
+.bg-teal{background-color: #17d9a9;}
+.bg-success { background-color: #17c840; }
 /* --- Student List Polish --- */
 .student-list {
     background-color: #fff;
@@ -874,6 +870,8 @@ h1, h2, h3, h4 { color: #212529; }
     }
     .dashboard-layout {
         display: flex;              /* use flex instead of block */
+        flex-wrap: wrap;
+        gap:30px;
         flex-direction: column;     /* stack in a column */
     }
     .dashboard-sidebar {

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - USM SLP</title>
     <script src="js/config.js"></script>
-    <script src="js/auth.js"></script>
     <script src="js/student-dashboard.js"></script>
     <link rel="stylesheet" href="css/Dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -30,6 +29,24 @@
             <div class="dashboard-layout">
                 <!-- Main Content Area -->
                 <div class="dashboard-main">
+                    <div class="card">
+                        <div class="card-header bg-info"><i class="fas fa-user-check"></i> Mark My Attendance</div>
+                        <div class="card-content">
+                            <p>Enter the 6-digit passcode provided by your supervisor to mark your attendance for today's session.</p>
+                            <div id="attendance-submission-form">
+                                <div class="form-group">
+                                    <label for="passcode-input">Passcode</label>
+                                    <!-- Use pattern="[0-9]*" for number keyboard on mobile, maxlength="6" for limit -->
+                                    <input type="text" id="passcode-input" placeholder="Enter 6-digit code" inputmode="numeric" pattern="[0-9]*" maxlength="6">
+                                </div>
+                                <div class="form-actions">
+                                    <button id="submit-attendance-btn" class="btn-primary">Submit Passcode</button>
+                                </div>
+                            </div>
+                            <!-- Feedback will be shown here -->
+                            <div id="attendance-feedback" class="feedback-message" style="margin-top: 15px;"></div>
+                        </div>
+                    </div>
                     <!-- Absence Form Card -->
                     <div class="card">
                         <div class="card-header bg-purple"><i class="fas fa-file-signature"></i> Absence Request</div>
