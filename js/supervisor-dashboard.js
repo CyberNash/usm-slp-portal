@@ -1,9 +1,9 @@
-   // --- supervisor-dashboard.js ---
-document.addEventListener('DOMContentLoaded', () => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-    if (!currentUser || currentUser.role !== 'Supervisor') {
-        alert('Access Denied.');
+   // ---/js/supervisor-dashboard.js ---
+document.addEventListener('DOMContentLoaded', async() => {
+    const currentUser = await validateSession();
+    if (!currentUser) return;
+    if (currentUser.role !== 'Supervisor') {
+        alert('Access Denied. You do not have permission to view this page.');
         window.location.href = 'index.html';
         return;
     }
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const announcementsListContainer = document.getElementById('announcements-list');
 
     // --- Main Initializer ---
-    function initSupervisorView() {
+    function initSupervisorView(currentUser) {
         document.getElementById('welcome-message').textContent = `Welcome, ${currentUser.fullName}!`;
         populateSupervisorProfile();
         loadPendingRequests();

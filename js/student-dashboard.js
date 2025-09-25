@@ -1,8 +1,6 @@
 // js/student-dashboard.js
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // CRITICAL: Make sure this is your correct API URL    
-    // --- 1. AUTHENTICATION & DATA RETRIEVAL ---
     const currentUser = await validateSession();
     if (!currentUser) return;
     if (currentUser.role !== 'Student') {
