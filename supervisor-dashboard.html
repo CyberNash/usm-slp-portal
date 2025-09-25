@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supervisor Dashboard - USM SLP</title>
     <script src="js/config.js"></script>
-    <script src="js/auth.js"></script>
     <link rel="stylesheet" href="css/Dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
@@ -33,6 +32,24 @@
                     <div class="card-header"><i class="fas fa-inbox"></i> Pending Absence Requests</div>
                     <div class="card-content" id="pending-requests-list"></div>
                 </div>
+                
+                <div class="content-card"> <!-- Use your existing card class -->
+                    <h3 class="card-header">Attendance Passcode Generator</h3>
+                    <div class="card-body">
+                        <div id="attendance-generator-form">
+                            <label for="session-name-input">Session Name:</label>
+                            <input type="text" id="session-name-input" placeholder="e.g., Clinical Practicum Week 5">
+                            <button id="generate-code-btn" class="btn btn-primary">Generate Code</button>
+                        </div>
+                        
+                        <div id="code-display-area" style="display: none; margin-top: 20px; text-align: center; border-top: 1px solid #eee; padding-top: 20px;">
+                            <h4>Share this code with students:</h4>
+                            <h1 id="passcode-display" style="font-size: 3.5em; letter-spacing: 10px; margin: 10px 0; color: #6A0DAD;"></h1>
+                            <p id="expiry-timer" style="font-weight: bold;"></p>
+                        </div>
+                        <div id="generator-feedback" class="feedback-message"></div>
+                    </div>
+                </div>                
 
                 <!-- Card 2: Announcements -->
                 <div class="card">
@@ -99,24 +116,6 @@
                 <button type="submit" class="btn-gold">Save Changes</button>
                 <button type="button" id="delete-announcement-btn" class="btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
             </form>
-        </div>
-
-        <div class="content-card"> <!-- Use your existing card class -->
-            <h3 class="card-header">Attendance Passcode Generator</h3>
-            <div class="card-body">
-                <div id="attendance-generator-form">
-                    <label for="session-name-input">Session Name:</label>
-                    <input type="text" id="session-name-input" placeholder="e.g., Clinical Practicum Week 5">
-                    <button id="generate-code-btn" class="btn btn-primary">Generate Code</button>
-                </div>
-                
-                <div id="code-display-area" style="display: none; margin-top: 20px; text-align: center; border-top: 1px solid #eee; padding-top: 20px;">
-                    <h4>Share this code with students:</h4>
-                    <h1 id="passcode-display" style="font-size: 3.5em; letter-spacing: 10px; margin: 10px 0; color: #6A0DAD;"></h1>
-                    <p id="expiry-timer" style="font-weight: bold;"></p>
-                </div>
-                <div id="generator-feedback" class="feedback-message"></div>
-            </div>
         </div>
 
         <!-- Absence Request Response Modal -->
