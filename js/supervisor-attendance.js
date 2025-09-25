@@ -1,4 +1,3 @@
-// js/supervisor-attendance.js
 document.addEventListener('DOMContentLoaded', () => {
     // API_URL is from config.js
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -7,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'index.html';
         return;
     }
+
+    // --- Get Elements ---
     const studentSelectionArea = document.getElementById('student-selection-area');
     const generateCodeBtn = document.getElementById('generate-code-btn');
     const sessionNameInput = document.getElementById('session-name-input');
@@ -15,14 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const expiryTimerDisplay = document.getElementById('expiry-timer');
     const generatorFeedback = document.getElementById('generator-feedback');
     let timerInterval;
-
  
     async function loadStudents() {
+        studentSelectionArea.innerHTML = '<p>Loading student list...</p>';
         try {
             const response = await fetch(`${API_URL}?action=getAllStudents`);
             const result = await response.json();
             if (result.status === 'success') {
-                let studentHtml = '<h3>Select Students</h3><div class="student-list">';
+                let studentHtml = '<h3>Select Students for this Session</h3><div class="student-list">';
                 result.data.forEach(student => {
                     studentHtml += `
                         <div class="student-checkbox">
@@ -33,28 +34,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 studentHtml += '</div>';
                 studentSelectionArea.innerHTML = studentHtml;
             } else {
-                studentSelectionArea.innerHTML = '<p>Could not load students.</p>';
+                studentSelectionArea.innerHTML = '<p style="color:red;">Could not load students.</p>';
             }
         } catch (error) {
-            studentSelectionArea.innerHTML = '<p>Error loading students.</p>';
+            studentSelectionArea.innerHTML = '<p style="color:red;">Error loading students.</p>';
         }
     }
     
-   // --- NEW: Function to display code and start timer ---
     function displayCode(passcode, expiryString) {
         passcodeDisplay.textContent = passcode;
         codeDisplayArea.style.display = 'block';
-        
         const expiryTime = new Date(expiryString);
         if (timerInterval) clearInterval(timerInterval);
-
         timerInterval = setInterval(() => {
             const diff = expiryTime - new Date();
             if (diff <= 0) {
                 clearInterval(timerInterval);
                 expiryTimerDisplay.textContent = "Code has expired.";
                 passcodeDisplay.style.textDecoration = 'line-through';
-                sessionStorage.removeItem('lastGeneratedCode'); // Clear when expired
+                sessionStorage.removeItem('lastGeneratedCode');
                 return;
             }
             const minutes = Math.floor(diff / 60000);
@@ -64,57 +62,72 @@ document.addEventListener('DOMContentLoaded', () => {
         passcodeDisplay.style.textDecoration = 'none';
     }
     
-    // --- NEW: Check session storage on page load ---
     function loadLastGeneratedCode() {
         const storedCodeData = sessionStorage.getItem('lastGeneratedCode');
         if (storedCodeData) {
             const { passcode, expires } = JSON.parse(storedCodeData);
-            // If the stored code is not yet expired, display it
             if (new Date(expires) > new Date()) {
                 displayCode(passcode, expires);
             } else {
-                sessionStorage.removeItem('lastGeneratedCode'); // Clean up expired code
+                sessionStorage.removeItem('lastGeneratedCode');
             }
         }
     }
     
     async function handleGenerateCode() {
-    const selectedStudents = Array.from(document.querySelectorAll('input[name="students"]:checked'))
-                                 .map(cb => cb.value);
-
-    if (selectedStudents.length === 0) {
-        alert('Please select at least one student.');
-        return;
-    }
-        // ... (Button disabling logic remains the same)
         const sessionName = sessionNameInput.value.trim();
+        const selectedStudents = Array.from(document.querySelectorAll('input[name="students"]:checked'))
+                                     .map(cb => cb.value);
+
+        if (!sessionName) {
+            alert('Please enter a session name.');
+            return;
+        }
+        if (selectedStudents.length === 0) {
+            alert('Please select at least one student.');
+            return;
+        }
+
+        // --- FIX #1: Add back the button disabling for better UX ---
+        generateCodeBtn.disabled = true;
+        generateCodeBtn.textContent = 'Generating...';
+        generatorFeedback.textContent = ''; // Clear previous feedback
+
+        // --- FIX #2: Add the selected student IDs to the payload ---
         const payload = {
             action: 'generateAttendanceCode',
             sessionName: sessionName,
-            supervisorId: currentUser.userId
+            supervisorId: currentUser.userId,
+            studentIds: selectedStudents // This key was missing
         };
 
         try {
-            const response = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+            const response = await fetch(API_URL, { 
+                method: 'POST', 
+                body: JSON.stringify(payload) 
+            });
             const result = JSON.parse(await response.text());
 
             if (result.status === 'success') {
-                // --- Store and Display the new code ---
                 sessionStorage.setItem('lastGeneratedCode', JSON.stringify(result.data));
                 displayCode(result.data.passcode, result.data.expires);
-                sessionNameInput.value = '';
+                sessionNameInput.value = ''; // Clear input
             } else {
-                throw new Error(result.message || 'Failed to generate code.');
+                throw new Error(result.message || 'Failed to generate code from backend.');
             }
         } catch (error) {
             generatorFeedback.textContent = error.message;
-            generatorFeedback.className = 'feedback-message error';
+            generatorFeedback.className = 'feedback-message error'; // Assumes you have styling for this
         } finally {
             generateCodeBtn.disabled = false;
             generateCodeBtn.textContent = 'Generate Code';
         }
     }
 
+    // --- Link the event listener ---
     generateCodeBtn.addEventListener('click', handleGenerateCode);
-    loadLastGeneratedCode(); // --- Load the code when the page starts! ---
+    
+    // --- Initial function calls when the page loads ---
+    loadLastGeneratedCode(); 
+    loadStudents(); // --- FIX #3: Call the function to load the student list! ---
 });

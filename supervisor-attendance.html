@@ -27,17 +27,27 @@
             <div class="card-header">Attendance Passcode Generator</div>
             <div class="card-content">
                 <div id="attendance-generator-form">
-                    <label for="session-name-input">Session Name:</label>
-                    <input type="text" id="session-name-input" placeholder="e.g., Clinical Practicum Week 5">
-                    <button id="generate-code-btn" class="btn-primary">Generate Code</button>
+                    <!-- WRAP the label and input in this new div -->
+                    <div class="form-group">
+                        <label for="session-name-input">Session Name</label>
+                        <input type="text" id="session-name-input" placeholder="e.g., Clinical Practicum Week 5">
+                    </div>
                 </div>
                 
-                <div id="code-display-area" style="display: none;">
+                <!-- This is where the student list for targeting will go -->
+                <div id="student-selection-area" style="margin-top: 20px;">
+                    <!-- Content loaded by JS -->
+                </div> 
+
+                <!-- Move the button and feedback area here to be at the bottom -->
+                <button id="generate-code-btn" class="btn-primary" style="margin-top: 15px;">Generate Code</button>
+                <div id="generator-feedback" class="feedback-message" style="margin-top: 15px;"></div>
+                
+                <div id="code-display-area" style="display: none; border-top: 1px solid #eee; margin-top:20px; padding-top:20px; text-align: center;">
                     <h4>Share this code with students:</h4>
                     <h1 id="passcode-display"></h1>
                     <p id="expiry-timer"></p>
                 </div>
-                <div id="generator-feedback"></div>
             </div>
         </div>
         <!-- This is where the student list for targeting will go in Part 3 -->
