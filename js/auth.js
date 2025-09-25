@@ -1,12 +1,10 @@
-/**
+/**auth.js
  * =================================================================================
  * Authentication JavaScript for USM SLP Website
  * =================================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // IMPORTANT: Make sure this matches the API_URL in your main.js file.
-
  // --- Get all the necessary DOM elements ---
     const loginNavBtn = document.getElementById('login-nav-btn');
     const signupNavBtn = document.getElementById('signup-nav-btn');
@@ -22,6 +20,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabLinks = document.querySelectorAll('.tab-link');
     const signupForms = document.querySelectorAll('.signup-form');
 
+    async function validateSession() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Check 1: Is there a user object and a token in localStorage?
+        if (!currentUser || !currentUser.userId || !currentUser.token) {
+            console.log("No user or token found. Redirecting to login.");
+            localStorage.removeItem('currentUser'); // Clean up partial data
+            window.location.href = 'index.html';
+            return null;
+        }
+
+        // Check 2: Ask the backend if this token is still valid.
+        try {
+            const payload = {
+                action: 'validateToken', // We will create this action on the backend
+                userId: currentUser.userId,
+                token: currentUser.token
+            };
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.status !== 'success' || result.isValid !== true) {
+                console.log("Session token is invalid or expired. Logging out.");
+                localStorage.removeItem('currentUser');
+                alert('Your session has expired. Please log in again.');
+                window.location.href = 'index.html';
+                return null;
+            }
+
+            // If we get here, the token is valid!
+            console.log("Session token is valid.");
+            return currentUser;
+
+        } catch (error) {
+            console.error("Error during session validation:", error);
+            alert('Could not verify session. Please check your internet connection and try again.');
+            window.location.href = 'index.html'; // Redirect on error
+            return null;
+        }
+    }
 
     // --- Functions to control modals ---
     function showModal(modalElement) {
@@ -62,12 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /**
-     * Handles all form submissions to the Google Apps Script.
-     * @param {HTMLFormElement} formElement The form being submitted.
-     * @param {string} url The API endpoint.
-     * @param {object} payload The data to send.
-     */
     async function handleFormSubmit(formElement, url, payload) {
         const submitButton = formElement.querySelector('button[type="submit"]');
         submitButton.disabled = true;

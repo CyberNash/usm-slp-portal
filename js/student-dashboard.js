@@ -1,15 +1,14 @@
 // js/student-dashboard.js
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // CRITICAL: Make sure this is your correct API URL    
     // --- 1. AUTHENTICATION & DATA RETRIEVAL ---
-    // This is our security guard. It ensures only a logged-in Student can see this page.
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser || currentUser.role !== 'Student') {
-        alert('Access Denied. You are not authorized to view this page.');
-        // Redirect non-students or logged-out users away.
-        window.location.href = 'index.html'; 
-        return; // Stop the rest of the script from running
+    const currentUser = await validateSession();
+    if (!currentUser) return;
+    if (currentUser.role !== 'Student') {
+        alert('Access Denied. You do not have permission to view this page.');
+        window.location.href = 'index.html';
+        return;
     }
     
     let selectedFile = null; // Variable to hold the file for upload
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeFileBtn = document.getElementById('remove-file-btn');
     
     // --- 3. INITIALIZE THE STUDENT VIEW ---
-    function initStudentView() {
+    function initStudentView(currentUser) {
         // Populate header and profile card with the student's specific data
         welcomeMessage.textContent = `Welcome, ${currentUser.fullName}!`;
         populateStudentProfile();
