@@ -27,34 +27,38 @@
         <div class="dashboard-layout">
             <!-- Main Content Area (Now stacks the three cards) -->
             <div class="dashboard-main">
-                <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3 id="pending-requests-count">0</h3>
-                    <p>Pending Absence Requests</p>
-                </div>
-                <div class="icon"><i class="fas fa-inbox"></i></div>
-                <a href="#pending-requests-card" class="small-box-footer">View below <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+                    <div class="info-box-row">
+        <!-- Box 1: Pending Absence Requests -->
+                        <div class="small-box bg-warning"> <!-- yellow for pending -->
+                        <div class="inner">
+                            <h3 id="pending-requests-count">0</h3>
+                            <p>Pending Absence Requests</p>
+                        </div>
+                        <div class="icon"><i class="fas fa-inbox"></i></div>
+                        <!-- You can link this to a detailed page later if you want -->
+                        <a href="#pending-requests-card" class="small-box-footer">View below <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
 
-                <!-- Box 2: Attendance Page (h3 HAS the class="box-title") -->
-                <div class="small-box bg-info">
-                <div class="inner">
-                    <h3 class="box-title">Attendance</h3>
-                    <p>Generate Passcodes</p>
-                </div>
-                <div class="icon"><i class="fas fa-user-check"></i></div>
-                <a href="supervisor-attendance.html" class="small-box-footer">Go to page <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+                        <!-- Box 2: Link to Attendance Page -->
+                        <div class="small-box bg-info"> <!-- blue for attendance -->
+                        <div class="inner">
+                            <h3>Attendance</h3>
+                            <p>Generate Passcodes</p>
+                        </div>
+                        <div class="icon"><i class="fas fa-user-check"></i></div>
+                        <a href="supervisor-attendance.html" class="small-box-footer">Go to page <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
 
-                <!-- Box 3: Announcements Page (h3 HAS the class="box-title") -->
-                <div class="small-box bg-success">
-                <div class="inner">
-                    <h3 class="box-title">Announcements</h3>
-                    <p>Manage Posts</p>
-                </div>
-                <div class="icon"><i class="fas fa-bullhorn"></i></div>
-                <a href="supervisor-announcements.html" class="small-box-footer">Go to page <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+                        <!-- Box 3: Link to Announcements Page -->
+                        <div class="small-box bg-success"> <!-- green for announcements -->
+                        <div class="inner">
+                            <h3>Announcements</h3>
+                            <p>Manage Posts</p>
+                        </div>
+                        <div class="icon"><i class="fas fa-bullhorn"></i></div>
+                        <a href="supervisor-announcements.html" class="small-box-footer">Go to page <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
                 <!-- Card 1: Pending Absence Requests -->
                 <div class="card">
                     <div class="card-header"><i class="fas fa-inbox"></i> Pending Absence Requests</div>
