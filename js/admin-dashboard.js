@@ -1,12 +1,13 @@
-//js/admin-dashboard.js
-document.addEventListener('DOMContentLoaded',async () => {
-    const currentUser = await validateSession();
-    if (!currentUser) return;
-    if (currentUser.role !== 'Admin') {
-        alert('Access Denied. You do not have permission to view this page.');
+document.addEventListener('DOMContentLoaded', () => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    // --- 1. AUTHENTICATION GUARD ---
+    if (!currentUser || currentUser.role !== 'Admin') {
+        alert('ACCESS DENIED. You must be an administrator to view this page.');
         window.location.href = 'index.html';
         return;
     }
+
     // --- 2. GET ALL NECESSARY ELEMENTS ---
     const resourceForm = document.getElementById('resource-form');
     const resourcesListContainer = document.getElementById('existing-resources-list');
@@ -15,8 +16,9 @@ document.addEventListener('DOMContentLoaded',async () => {
     const editUserForm = document.getElementById('edit-user-form');
     const modalBackdrop = document.getElementById('modal-backdrop');
     document.getElementById('welcome-message').textContent = `Welcome, ${currentUser.fullName}!`;
+
     // --- 3. MAIN INITIALIZER ---
-    function initAdminView(currentUser) {
+    function initAdminView() {
         // Load initial data for the default view
         loadExistingResources();
         loadAllUsers();
