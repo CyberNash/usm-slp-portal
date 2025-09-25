@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('announcement-form').addEventListener('submit', handleAnnouncementSubmit);
         document.getElementById('edit-announcement-form').addEventListener('submit', handleEditAnnouncementSubmit);
         announcementsListContainer.addEventListener('click', handleAnnouncementsListClick);
-        document.getElementById('generate-code-btn').addEventListener('click', handleGenerateCode);
     }
 
     // --- Modal Helpers ---
@@ -39,80 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideModals() { modalBackdrop.style.display = 'none'; modalBackdrop.querySelectorAll('.modal-content').forEach(modal => modal.style.display = 'none'); }
     // --- Data Display Functions ---
 
-    // =================================================================
-    // NEW: ATTENDANCE FEATURE LOGIC
-    // =================================================================
-    let timerInterval; // Keep track of the countdown timer globally
-
-    async function handleGenerateCode() {
-        const generateCodeBtn = document.getElementById('generate-code-btn');
-        const sessionNameInput = document.getElementById('session-name-input');
-        const codeDisplayArea = document.getElementById('code-display-area');
-        const passcodeDisplay = document.getElementById('passcode-display');
-        const expiryTimerDisplay = document.getElementById('expiry-timer');
-        const generatorFeedback = document.getElementById('generator-feedback');
-
-        const sessionName = sessionNameInput.value.trim();
-
-        if (!sessionName) {
-            generatorFeedback.textContent = 'Please enter a session name.';
-            generatorFeedback.className = 'feedback-message error'; // Assumes you have CSS for this
-            return;
-        }
-
-        // Disable button and show loading state
-        generateCodeBtn.disabled = true;
-        generateCodeBtn.textContent = 'Generating...';
-        generatorFeedback.textContent = ''; // Clear previous messages
-        
-        const payload = {
-            action: 'generateAttendanceCode',
-            sessionName: sessionName,
-            supervisorId: currentUser.userId // Use the logged-in supervisor's ID
-        };
-
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
-            const result = JSON.parse(await response.text()); // Use your existing response parsing
-
-            if (result.status === 'success') {
-                passcodeDisplay.textContent = result.data.passcode;
-                codeDisplayArea.style.display = 'block';
-                sessionNameInput.value = ''; // Clear input for next time
-
-                // Start the countdown timer
-                const expiryTime = new Date(result.data.expires);
-                if (timerInterval) clearInterval(timerInterval); // Clear any old timer
-
-                timerInterval = setInterval(() => {
-                    const diff = expiryTime - new Date();
-                    if (diff <= 0) {
-                        clearInterval(timerInterval);
-                        expiryTimerDisplay.textContent = "Code has expired.";
-                        passcodeDisplay.style.textDecoration = 'line-through';
-                        return;
-                    }
-                    const minutes = Math.floor(diff / 60000);
-                    const seconds = Math.floor((diff % 60000) / 1000);
-                    expiryTimerDisplay.textContent = `Expires in: ${minutes}m ${seconds.toString().padStart(2, '0')}s`;
-                }, 1000);
-                passcodeDisplay.style.textDecoration = 'none'; // Ensure it's not struck-through on new generation
-
-            } else {
-                throw new Error(result.message || 'Failed to generate code.');
-            }
-        } catch (error) {
-            generatorFeedback.textContent = error.message;
-            generatorFeedback.className = 'feedback-message error';
-        } finally {
-            generateCodeBtn.disabled = false;
-            generateCodeBtn.textContent = 'Generate Code';
-        }
-    }
-        
      async function handleDeleteAnnouncementClick() {
         const announcementId = document.getElementById('edit-ann-id').value;
         if (!announcementId) {

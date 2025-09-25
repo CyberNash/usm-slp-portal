@@ -27,15 +27,43 @@
         <div class="dashboard-layout">
             <!-- Main Content Area (Now stacks the three cards) -->
             <div class="dashboard-main">
+                <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3 id="pending-requests-count">0</h3>
+                    <p>Pending Absence Requests</p>
+                </div>
+                <div class="icon"><i class="fas fa-inbox"></i></div>
+                <a href="#pending-requests-card" class="small-box-footer">View below <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+
+                <!-- Box 2: Attendance Page (h3 HAS the class="box-title") -->
+                <div class="small-box bg-info">
+                <div class="inner">
+                    <h3 class="box-title">Attendance</h3>
+                    <p>Generate Passcodes</p>
+                </div>
+                <div class="icon"><i class="fas fa-user-check"></i></div>
+                <a href="supervisor-attendance.html" class="small-box-footer">Go to page <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+
+                <!-- Box 3: Announcements Page (h3 HAS the class="box-title") -->
+                <div class="small-box bg-success">
+                <div class="inner">
+                    <h3 class="box-title">Announcements</h3>
+                    <p>Manage Posts</p>
+                </div>
+                <div class="icon"><i class="fas fa-bullhorn"></i></div>
+                <a href="supervisor-announcements.html" class="small-box-footer">Go to page <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
                 <!-- Card 1: Pending Absence Requests -->
                 <div class="card">
                     <div class="card-header"><i class="fas fa-inbox"></i> Pending Absence Requests</div>
                     <div class="card-content" id="pending-requests-list"></div>
                 </div>
-                
-                <div class="content-card"> <!-- Use your existing card class -->
+
+                <div class="card"> <!-- Use your existing card class -->
                     <h3 class="card-header">Attendance Passcode Generator</h3>
-                    <div class="card-body">
+                    <div class="card-content">
                         <div id="attendance-generator-form">
                             <label for="session-name-input">Session Name:</label>
                             <input type="text" id="session-name-input" placeholder="e.g., Clinical Practicum Week 5">
