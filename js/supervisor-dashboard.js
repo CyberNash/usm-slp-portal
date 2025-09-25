@@ -251,18 +251,43 @@ async function handleHistoryEditClick(event) {
     
     async function loadPendingRequests() {
         const list = document.getElementById('pending-requests-list');
+        
+        // --- NEW: Get the element for the count in the info box ---
+        const pendingCountElement = document.getElementById('pending-requests-count');
+
+        // Set initial loading states
         list.innerHTML = '<p>Loading requests...</p>';
+        pendingCountElement.textContent = '-'; // Use a hyphen as a loading indicator
+
         try {
             const response = await fetch(`${API_URL}?action=getAbsenceRequests&supervisorId=${currentUser.userId}`);
             const result = await response.json();
-            if (result.status === 'success' && result.data.length > 0) {
-                list.innerHTML = '';
-                result.data.forEach(req => {
-                    const fileLinkHTML = req.fileUrl ? `<div class="attachment-link"><a href="${req.fileUrl}" target="_blank"><i class="fas fa-paperclip"></i> View Attachment</a></div>` : '';
-                    list.innerHTML += `<div class="request-item"><div class="request-item__header"><span><i class="fas fa-user"></i> ${req.studentName}</span><span class="status-pill pending">pending</span></div><div class="request-item__meta"><i class="fas fa-calendar-alt"></i> ${new Date(req.absenceDate).toLocaleDateString()}</div><p class="request-item__reason">${req.reason}</p>${fileLinkHTML}<div class="request-item__actions"><button class="btn-approve" data-request-id="${req.requestId}"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" data-request-id="${req.requestId}"><i class="fas fa-times"></i> Reject</button></div></div>`;
-                });
-            } else { list.innerHTML = '<p>No pending absence requests.</p>'; }
-        } catch(e){ list.innerHTML = '<p style="color:red">Failed to load requests.</p>'; }
+
+            if (result.status === 'success') {
+                const pendingRequests = result.data || []; // Ensure it's an array
+
+                // --- NEW: Update the count using the length of the data array ---
+                pendingCountElement.textContent = pendingRequests.length;
+
+                if (pendingRequests.length > 0) {
+                    list.innerHTML = '';
+                    pendingRequests.forEach(req => {
+                        const fileLinkHTML = req.fileUrl ? `<div class="attachment-link"><a href="${req.fileUrl}" target="_blank"><i class="fas fa-paperclip"></i> View Attachment</a></div>` : '';
+                        list.innerHTML += `<div class="request-item"><div class="request-item__header"><span><i class="fas fa-user"></i> ${req.studentName}</span><span class="status-pill pending">pending</span></div><div class="request-item__meta"><i class="fas fa-calendar-alt"></i> ${new Date(req.absenceDate).toLocaleDateString()}</div><p class="request-item__reason">${req.reason}</p>${fileLinkHTML}<div class="request-item__actions"><button class="btn-approve" data-request-id="${req.requestId}"><i class="fas fa-check"></i> Approve</button><button class="btn-reject" data-request-id="${req.requestId}"><i class="fas fa-times"></i> Reject</button></div></div>`;
+                    });
+                } else {
+                    list.innerHTML = '<p>No pending absence requests.</p>';
+                }
+            } else {
+                // Handle case where status is not 'success'
+                pendingCountElement.textContent = '0';
+                list.innerHTML = `<p>${result.message || 'Could not load requests.'}</p>`;
+            }
+        } catch(e) {
+            list.innerHTML = '<p style="color:red">Failed to load requests.</p>';
+            // --- NEW: Show an error state in the box ---
+            pendingCountElement.textContent = 'Err';
+        }
     }
     
     function handleRequestAction(event) {
