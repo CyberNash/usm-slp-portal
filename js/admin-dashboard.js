@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     async function handleResourceListClick(event) {
-        if (event.target.matches('.btn-admin-delete')) {
+        if (event.target.matches('.btn-delete')) {
             const resourceId = event.target.dataset.id;
             if (confirm('Are you sure you want to delete this resource?')) {
                 const response = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteResource', resourceId }) });
