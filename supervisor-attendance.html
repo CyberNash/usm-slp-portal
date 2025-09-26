@@ -24,77 +24,35 @@
 
     <main class="container-fluid" style="padding-top:30px;">
         <div class="card">
-            <div class="card-header">Attendance Passcode Generator</div>
+            <div class="card-header">View Daily Attendance Report</div>
             <div class="card-content">
-                <div id="attendance-generator-form">
-                    <!-- WRAP the label and input in this new div -->
-                    <div class="form-group">
-                        <label for="session-name-input">Session Name</label>
-                        <input type="text" id="session-name-input" placeholder="e.g., Clinical Practicum Week 5">
+                <!-- New Report Controls -->
+                <div class="form-group">
+                    <label for="report-date-input">Select a Date</label>
+                    <div class="report-controls">
+                        <input type="date" id="report-date-input">
+                        <button id="get-report-btn" class="btn-primary">Get Report</button>
                     </div>
                 </div>
-                
-                <!-- This is where the student list for targeting will go -->
-                <div id="student-selection-area" style="margin-top: 20px;">
-                    <!-- Content loaded by JS -->
-                </div> 
 
-                <!-- Move the button and feedback area here to be at the bottom -->
-                <button id="generate-code-btn" class="btn-primary" style="margin-top: 15px;">Generate Code</button>
-                <div id="generator-feedback" class="feedback-message" style="margin-top: 15px;"></div>
-                
-                <div id="code-display-area" style="display: none; border-top: 1px solid #eee; margin-top:20px; padding-top:20px; text-align: center;">
-                    <h4>Share this code with students:</h4>
-                    <h1 id="passcode-display"></h1>
-                    <p id="expiry-timer"></p>
+                <!-- New Report Table -->
+                <div class="table-responsive" style="margin-top: 20px;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Matric Number</th>
+                                <th>Status</th>
+                                <th>Submission Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-report-body">
+                            <!-- Report rows will be loaded here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <!-- This is where the student list for targeting will go in Part 3 -->
-        <div id="student-selection-area"></div> 
-        <div class="card" style="margin-top: 30px;">
-        <div class="card-header"><i class="fas fa-history"></i> Session History</div>
-        <div class="card-content">
-            <div class="table-responsive">
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>Session Name</th>
-                            <th>Date Issued</th>
-                            <th>Passcode</th>
-                            <th>Response Status</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody id="attendance-history-body">
-                        <!-- History rows will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add this modal to the bottom of your <body>, after the footer -->
-    <div id="modal-backdrop" class="modal-backdrop" style="display: none;">
-        <div id="attendance-details-modal" class="modal-content" style="display: none;">
-            <span class="close-btn">&times;</span>
-            <h2 id="modal-session-name" class="modal-header">Session Details</h2>
-            <div class="table-responsive">
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Status</th>
-                            <th>Submission Time</th>
-                        </tr>
-                    </thead>
-                    <tbody id="modal-student-list-body">
-                        <!-- Student details will be rendered here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
     </main>
 
     <script src="js/supervisor-attendance.js"></script>

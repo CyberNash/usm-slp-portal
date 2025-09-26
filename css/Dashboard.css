@@ -232,7 +232,25 @@ h1, h2, h3, h4 { color: #212529; }
 .status-pill.rejected { background-color: #f8d7da; color: #842029; }
 .status-pill.approved { background-color: #d1e7dd; color: #0f5132; }
 .status-pill.present { background-color: #d4edda;color: #155724;}
-.status-pill.absent {background-color: #f8d7da;color: #721c24;}
+.status-pill.absent {background-color: #f8d7da;color: #bb1627;}
+.status-pill.late {
+    background-color: #fff3cd; /* A light yellow/orange */
+    color: #856404;
+}
+.report-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.report-controls input[type="date"] {
+    /* You can use your existing .form-control styles if you have them,
+       or add specific styling here */
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+}
 .doc-link {
   display: inline-block;
   padding: 6px 12px;
