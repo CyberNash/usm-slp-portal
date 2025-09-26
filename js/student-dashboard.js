@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         welcomeMessage.textContent = `Welcome, ${currentUser.fullName}!`;
         populateStudentProfile();
         loadAbsenceHistory();
+        loadStudentAttendanceLog();
         // Prepare the absence form
         populateSupervisorsDropdown();
         document.getElementById('absence-file').addEventListener('change', (e) => {
@@ -39,6 +40,33 @@ document.addEventListener('DOMContentLoaded', () => {
         submitAttendanceBtn.addEventListener('click', handleSubmitAttendance);
 
         
+    }
+
+    async function loadStudentAttendanceLog() {
+        const tbody = document.getElementById('student-attendance-log-body');
+        tbody.innerHTML = '<tr><td colspan="3">Loading attendance log...</td></tr>'; // Use colspan="3" now
+
+        try {
+            const response = await fetch(`${API_URL}?action=getStudentAttendanceHistory&studentId=${currentUser.userId}`);
+            const result = await response.json();
+
+            if (result.status === 'success' && result.data.length > 0) {
+                tbody.innerHTML = '';
+                result.data.forEach(item => {
+                    const row = `
+                        <tr>
+                            <td>${item.sessionName}</td>
+                            <td>${new Date(item.timestamp).toLocaleString()}</td>
+                            <td>${item.issuedBy}</td> <!-- Display the new issuedBy field -->
+                        </tr>`;
+                    tbody.innerHTML += row;
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="3">No attendance records found.</td></tr>'; // Use colspan="3"
+            }
+        } catch (e) {
+            tbody.innerHTML = '<tr><td colspan="3" style="color:red;">Failed to load attendance log.</td></tr>'; // Use colspan="3"
+        }
     }
     
     async function handleSubmitAttendance() {
@@ -219,43 +247,50 @@ async function loadAbsenceHistory() {
     const tbody = document.getElementById('absence-history-body');
     const studentId = currentUser.userId;
 
-    // Show a loading state
-    tbody.innerHTML = '<tr><td colspan="5">Loading your history...</td></tr>';
+    // We now have 7 columns, so update the colspan
+    tbody.innerHTML = '<tr><td colspan="7">Loading your history...</td></tr>';
 
     try {
-        // Call our NEW API endpoint
         const response = await fetch(`${API_URL}?action=getStudentAbsenceHistory&studentId=${studentId}`);
         const result = await response.json();
 
         if (result.status === 'success' && result.data.length > 0) {
-            tbody.innerHTML = ''; // Clear the loading message
+            tbody.innerHTML = '';
             result.data.forEach(item => {
-                // Create a table row for each history item
-                const row = document.createElement('tr');
-                
-                // Use a conditional (ternary) operator for the document link
+                const requestStatusPill = `<span class="status-pill ${item.status.toLowerCase()}">${item.status}</span>`;
+
+                let loggedStatusPill = 'N/A';
+                if (item.status === 'Approved') {
+                    const pillClass = item.loggedStatus === 'Present' ? 'present' : 'absent';
+                    loggedStatusPill = `<span class="status-pill ${pillClass}">${item.loggedStatus}</span>`;
+                }
+
                 const documentLink = item.fileUrl
-                    ? `<a href="${item.fileUrl}" target="_blank" class="table-icon-link" title="View Document"><i class="fas fa-file-alt"></i></a>`
+                    ? `<a href="${item.fileUrl}" target="_blank" class="doc-link">
+                        📄 View Document
+                    </a>`
                     : 'N/A';
                 
-                // Use the item status to apply a CSS class for styling
-                const statusPill = `<span class="status-pill ${item.status.toLowerCase()}">${item.status}</span>`;
-
+                // This now renders all 7 columns, including the new Supervisor Notes.
+                const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${new Date(item.absenceDate).toLocaleDateString()}</td>
                     <td>${item.supervisorName}</td>
-                    <td>${statusPill}</td>
+                    <td>${requestStatusPill}</td>
+                    <td>${loggedStatusPill}</td>
                     <td>${item.reason}</td>
+                    <!-- ADD THE NEW CELL FOR NOTES -->
+                    <!-- The '|| "-"' shows a hyphen if the notes are empty, which looks cleaner -->
+                    <td>${item.supervisorNotes || '-'}</td>
                     <td>${documentLink}</td>
                 `;
                 tbody.appendChild(row);
             });
         } else {
-            tbody.innerHTML = '<tr><td colspan="5">No absence history found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7">No absence history found.</td></tr>'; // Update colspan
         }
     } catch (error) {
-        console.error("Failed to load absence history:", error);
-        tbody.innerHTML = '<tr><td colspan="5" style="color: red;">Could not load history. Please try again later.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="color: red;">Could not load history.</td></tr>'; // Update colspan
     }
 }
 

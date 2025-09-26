@@ -100,35 +100,37 @@
                         </div>
                     </div>
                     <div class="card" style="margin-top: 30px;">
-                        <div class="card-header bg-teal"><i class="fas fa-history"></i> Your Absence History</div>
-                        <div class="card-content">
-                            <div class="table-responsive">
-                                <table class="history-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Date of Absence</th>
-                                            <th>Supervisor</th>
-                                            <th>Status</th>
-                                            <th>Reason</th>
-                                            <th>Document</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="absence-history-body">
-                                        <!-- History rows will be loaded here by JavaScript -->
-                                        <tr><td colspan="5">Loading history...</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="card-header bg-teal"><i class="fas fa-history"></i> Attendance History</div>
+                    <div class="card-content">
+                        <div class="table-responsive">
+                            <table class="history-table">
+                                <thead>
+                                    <!-- This is the corrected and enhanced header structure -->
+                                    <tr>
+                                        <th>Date of Absence</th>
+                                        <th>Supervisor</th>
+                                        <th>Request Status</th>
+                                        <th>Attendance</th>    
+                                        <th>Reason</th>         
+                                        <th>Supervisor Notes</th>
+                                        <th>Document</th>
+                                    </tr>
+                                </thead>
+                                <!-- This is the single, correct tbody that the JS will target -->
+                                <tbody id="absence-history-body"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+                    
                 <!-- Sidebar -->
+
+            </div>
                 <aside class="dashboard-sidebar">
                     <div id="student-profile-card" class="card">
                         <!-- The student's profile will be dynamically loaded here by JavaScript -->
                     </div>
                 </aside>
-            </div>
         </div>
     </main>
     <footer class="footer">

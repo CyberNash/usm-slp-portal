@@ -231,7 +231,22 @@ h1, h2, h3, h4 { color: #212529; }
 .status-pill.pending  { background-color: #fff3cd; color: #664d03; border: 1px solid #ffe69c;}
 .status-pill.rejected { background-color: #f8d7da; color: #842029; }
 .status-pill.approved { background-color: #d1e7dd; color: #0f5132; }
+.status-pill.present { background-color: #d4edda;color: #155724;}
+.status-pill.absent {background-color: #f8d7da;color: #721c24;}
+.doc-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #4c4caf; /* green */
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
 
+.doc-link:hover {
+  background-color: #45a049;
+}
 
 /* --- History Table --- */
 .history-table {

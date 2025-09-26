@@ -16,7 +16,80 @@ document.addEventListener('DOMContentLoaded', () => {
     const expiryTimerDisplay = document.getElementById('expiry-timer');
     const generatorFeedback = document.getElementById('generator-feedback');
     let timerInterval;
- 
+    const historyTbody = document.getElementById('attendance-history-body');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    let sessionHistoryData = []; // To store fetched data and avoid re-fetching
+
+async function loadAttendanceHistory() {
+    historyTbody.innerHTML = '<tr><td colspan="5">Loading history...</td></tr>';
+    try {
+        const response = await fetch(`${API_URL}?action=getSupervisorAttendanceHistory&supervisorId=${currentUser.userId}`);
+        const result = await response.json();
+
+        if (result.status === 'success' && result.data.length > 0) {
+            sessionHistoryData = result.data; // Store data globally
+            historyTbody.innerHTML = '';
+            result.data.forEach((session, index) => {
+                const statusPill = session.submittedCount === session.totalAssigned ? 'bg-success' : 'bg-warning';
+                const row = `
+                    <tr>
+                        <td>${session.sessionName}</td>
+                        <td>${new Date(session.issuedDate).toLocaleString()}</td>
+                        <td>${session.passcode}</td>
+                        <td><span class="status-pill ${statusPill}">${session.submittedCount} of ${session.totalAssigned} responded</span></td>
+                        <td>
+                            <button class="btn-sm btn-info" data-index="${index}" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                historyTbody.innerHTML += row;
+            });
+        } else {
+            historyTbody.innerHTML = '<tr><td colspan="5">No history found.</td></tr>';
+        }
+    } catch(e) {
+        historyTbody.innerHTML = '<tr><td colspan="5" style="color:red">Failed to load history.</td></tr>';
+    }
+}
+
+// --- New function to show the details modal ---
+    function showDetailsModal(index) {
+        const session = sessionHistoryData[index];
+        if (!session) return;
+        
+        document.getElementById('modal-session-name').textContent = session.sessionName;
+        const modalTbody = document.getElementById('modal-student-list-body');
+        
+        modalTbody.innerHTML = ''; // Clear previous content
+        session.studentResponses.forEach(student => {
+            const statusClass = student.status === 'Submitted' ? 'status-pill submitted' : 'status-pill pending';
+            const timestamp = student.timestamp ? new Date(student.timestamp).toLocaleTimeString() : 'N/A';
+            const row = `
+                <tr>
+                    <td>${student.studentName}</td>
+                    <td><span class="${statusClass}">${student.status}</span></td>
+                    <td>${timestamp}</td>
+                </tr>`;
+            modalTbody.innerHTML += row;
+        });
+        
+        modalBackdrop.style.display = 'flex';
+        document.getElementById('attendance-details-modal').style.display = 'block';
+    }
+
+    // --- Add event listeners at the end of the script ---
+    historyTbody.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (btn) {
+            showDetailsModal(btn.dataset.index);
+        }
+    });
+    modalBackdrop.addEventListener('click', (e) => {
+        if (e.target.matches('.close-btn') || e.target === modalBackdrop) {
+            modalBackdrop.style.display = 'none';
+        }
+    });
     async function loadStudents() {
         studentSelectionArea.innerHTML = '<p>Loading student list...</p>';
         try {
@@ -128,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     generateCodeBtn.addEventListener('click', handleGenerateCode);
     
     // --- Initial function calls when the page loads ---
+    loadAttendanceHistory(); // Add this next to your other initial function calls
     loadLastGeneratedCode(); 
     loadStudents(); // --- FIX #3: Call the function to load the student list! ---
 });
