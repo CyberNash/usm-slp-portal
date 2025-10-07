@@ -128,43 +128,55 @@ document.addEventListener('DOMContentLoaded', () => {
         handleFormSubmit(loginForm, API_URL, payload);
     });
 
-    // --- Student Sign-Up Form Submission Listener ---
-    studentSignupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const payload = {
-            action: 'signUp',
-            role: 'Student',
-            fullName: document.getElementById('student-name').value,
-            matricNumber: document.getElementById('student-id').value,
-            year: document.getElementById('student-year').value,
-            course: document.getElementById('student-course').value,
-            email: document.getElementById('student-email').value,
-            phoneNumber: document.getElementById('student-phone').value,
-            password: document.getElementById('student-password').value
-        };
-        
-        // Use this console log to debug: Check the browser console (F12) to see exactly what is being sent.
-        console.log("Submitting Student Payload:", payload); 
+// In auth.js
 
-        handleFormSubmit(studentSignupForm, API_URL, payload);
-    });
+// --- Student Sign-Up Form Submission Listener (Updated) ---
+studentSignupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const password = document.getElementById('student-password').value;
+    const confirmPassword = document.getElementById('student-confirm-password').value;
 
-    // --- Supervisor Sign-Up Form Submission Listener ---
-    supervisorSignupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const payload = {
-            action: 'signUp',
-            role: 'Supervisor',
-            fullName: document.getElementById('supervisor-name').value,
-            employeeID: document.getElementById('supervisor-id').value,
-            email: document.getElementById('supervisor-email').value,
-            phoneNumber: document.getElementById('supervisor-phone').value,
-            password: document.getElementById('supervisor-password').value
-        };
+    // --- Frontend Validation Step ---
+    if (password !== confirmPassword) {
+        alert("Error: Passwords do not match. Please try again.");
+        return; // Stop the submission
+    }
+    
+    const payload = {
+        action: 'signUp',
+        role: 'Student',
+        fullName: document.getElementById('student-name').value,
+        matricNumber: document.getElementById('student-id').value,
+        year: document.getElementById('student-year').value,
+        course: document.getElementById('student-course').value,
+        email: document.getElementById('student-email').value,
+        phoneNumber: document.getElementById('student-phone').value,
+        password: password // Send the confirmed password
+    };
+    handleFormSubmit(studentSignupForm, API_URL, payload);
+});
 
-        // Use this console log to debug
-        console.log("Submitting Supervisor Payload:", payload);
-        
-        handleFormSubmit(supervisorSignupForm, API_URL, payload);
-    });
+// --- Supervisor Sign-Up Form Submission Listener (Updated) ---
+supervisorSignupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const password = document.getElementById('supervisor-password').value;
+    const confirmPassword = document.getElementById('supervisor-confirm-password').value;
+    
+    // --- Frontend Validation Step ---
+    if (password !== confirmPassword) {
+        alert("Error: Passwords do not match. Please try again.");
+        return; // Stop the submission
+    }
+
+    const payload = {
+        action: 'signUp',
+        role: 'Supervisor',
+        fullName: document.getElementById('supervisor-name').value,
+        employeeID: document.getElementById('supervisor-id').value,
+        email: document.getElementById('supervisor-email').value,
+        phoneNumber: document.getElementById('supervisor-phone').value,
+        password: password // Send the confirmed password
+    };
+    handleFormSubmit(supervisorSignupForm, API_URL, payload);
+});
 });
