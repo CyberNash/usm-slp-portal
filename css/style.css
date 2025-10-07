@@ -319,6 +319,20 @@ h2 {
   display: inline-block;
   vertical-align: middle;
 }
+.form-footer {
+    text-align: center; /* This is the magic line that centers the link */
+    margin-top: 15px;   /* Adds some nice spacing above the link */
+    font-size: 0.9em;
+}
+
+.form-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
 
 /* Footer Social Links */
 .footer-socials {
