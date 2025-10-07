@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const supervisorSignupForm = document.getElementById('supervisor-signup-form');
     const tabLinks = document.querySelectorAll('.tab-link');
     const signupForms = document.querySelectorAll('.signup-form');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const forgotPasswordModal = document.getElementById('forgot-password-modal');
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
 
 
     // --- Functions to control modals ---
@@ -31,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalBackdrop.classList.remove('active');
         loginModal.style.display = 'none';
         signupModal.style.display = 'none';
+        forgotPasswordModal.style.display = 'none';
     }
 
     // --- Event Listeners for showing/hiding modals ---
@@ -110,10 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Submission Error:', error);
             alert('A critical error occurred. Please try again.');
         } finally {
-            // Re-enable the button after the process is complete
             submitButton.disabled = false;
-            // You can customize this text if needed, e.g., using a data-attribute on the button
-            submitButton.textContent = formElement.id.includes('login') ? 'Login' : 'Sign Up';
+            // --- THIS IS THE IMPROVED LOGIC ---
+            if (formElement.id.includes('login')) {
+                submitButton.textContent = 'Login';
+            } else if (formElement.id.includes('forgot-password')) {
+                submitButton.textContent = 'Reset Password'; // Correctly handle the reset button
+            } else {
+                submitButton.textContent = 'Sign Up';
+            }
         }
     }
     
@@ -155,6 +164,37 @@ studentSignupForm.addEventListener('submit', (e) => {
     };
     handleFormSubmit(studentSignupForm, API_URL, payload);
 });
+
+forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Hide the login modal and show the reset modal
+        loginModal.style.display = 'none';
+        signupModal.style.display = 'none'; // Just in case
+        showModal(forgotPasswordModal);
+    });
+    
+    // --- NEW: Event listener for the reset password form submission ---
+    forgotPasswordForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newPassword = document.getElementById('reset-new-password').value;
+        const confirmPassword = document.getElementById('reset-confirm-password').value;
+
+        // Frontend validation
+        if (newPassword !== confirmPassword) {
+            alert("Error: New passwords do not match.");
+            return;
+        }
+
+        const payload = {
+            action: 'forgotPassword',
+            email: document.getElementById('reset-email').value,
+            specificId: document.getElementById('reset-specific-id').value,
+            newPassword: newPassword
+        };
+        
+        // Your generic handleFormSubmit function will work perfectly for this!
+        handleFormSubmit(forgotPasswordForm, API_URL, payload);
+    });
 
 // --- Supervisor Sign-Up Form Submission Listener (Updated) ---
 supervisorSignupForm.addEventListener('submit', (e) => {
