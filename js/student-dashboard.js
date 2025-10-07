@@ -69,12 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    async function handleSubmitAttendance() {
-        const passcode = passcode_input.value.trim();
 
-        // Basic validation
-        if (passcode.length !== 6 || !/^\d+$/.test(passcode)) {
-            attendanceFeedback.textContent = 'Please enter a valid 6-digit numeric passcode.';
+    async function handleSubmitAttendance() {
+        // --- THE FIX #1: Convert to uppercase immediately for consistency ---
+        const passcode = passcode_input.value.trim().toUpperCase();
+
+        // --- THE FIX #2: Update the validation logic ---
+        // We only need to check the length now, not the content.
+        if (passcode.length !== 6) {
+            // Updated error message to be more generic.
+            attendanceFeedback.textContent = 'Please enter a valid 6-character passcode.';
             attendanceFeedback.className = 'feedback-message error';
             return;
         }
@@ -86,8 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const payload = {
             action: 'submitAttendance',
-            passcode: passcode,
-            studentId: currentUser.userId // The logged-in student's unique ID
+            passcode: passcode, // Pass the uppercase version to the backend
+            studentId: currentUser.userId
         };
 
         try {
@@ -97,11 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const result = await response.json();
 
-            // Display feedback based on success or error
             if (result.status === 'success') {
                 attendanceFeedback.textContent = result.message;
                 attendanceFeedback.className = 'feedback-message success';
-                passcode_input.value = ''; // Clear input field on success
+                passcode_input.value = '';
             } else {
                 throw new Error(result.message || 'An unknown error occurred.');
             }
